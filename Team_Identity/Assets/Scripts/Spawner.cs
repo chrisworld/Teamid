@@ -6,35 +6,45 @@ using Newtonsoft.Json.Linq;
 
 public class Spawner : MonoBehaviour
 {
-  public Transform spawn_pos;
+  public Transform[] spawn_positions;
   public GameObject player_prefab;
+  public GameObject npc_prefab;
   public float spawn_range = 20f; 
 
+  private int spawn_index;
   private List<Player> player_list = new List<Player>();
+  private int[] shuffled_index;
 
   void Start()
   {
-
+    shuffled_index = ShuffledVector(spawn_positions.Length);
+    spawn_index = 0;
   }
-
-  /*
-  void OnMessage(int fromDeviceID, JToken data){
-    Debug.Log("message from " + fromDeviceID + " data: " + data);
-    if (data["action"] != null && data["action"].ToString().Equals("spawn") ){
-      //Player player = new Player();
-      player_list.Add(new Player());
-      SpawnPlayer();
-    }
-  }
-  */
 
   // Start is called before the first frame update
   public Player SpawnPlayer()
   {
-    Vector3 spawnPosition = new Vector3 (spawn_pos.position.x + Random.Range(-spawn_range, spawn_range), 0.5f, spawn_pos.position.z + Random.Range(-spawn_range, spawn_range));
+    Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
+    spawn_index += 1;
+    Vector2 spawnPosition = new Vector2 (spawn_pos.position.x + Random.Range(-spawn_range, spawn_range), spawn_pos.position.y + Random.Range(-spawn_range, spawn_range));
     Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
     GameObject player = (GameObject)Instantiate (player_prefab, spawnPosition, spawnRotation);
     return player.GetComponent<Player>();
+  }
+
+  // Spawn NPC
+  public void SpawnNPCs(int n_npc)
+  {
+    int npc_index = 0;
+    for (int index = 0; index < n_npc; index += 1) 
+    {
+      Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
+      spawn_index += 1;
+      Vector2 spawnPosition = new Vector2 (spawn_pos.position.x + Random.Range(-spawn_range, spawn_range), spawn_pos.position.y + Random.Range(-spawn_range, spawn_range));
+      Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
+      npc_index += 1;
+      GameObject npcs = (GameObject)Instantiate (npc_prefab, spawnPosition, spawnRotation);
+    }
   }
 
   // Add Spawnable Player to game
@@ -42,5 +52,26 @@ public class Spawner : MonoBehaviour
   {
     player_list.Add(player);
     Debug.Log("Add player to next game: " + player);
+  }
+
+  // create shuffled vector for spawning
+  
+  public int[] ShuffledVector(int vec_len) {
+
+    // create vector
+    int[] sh_vec = new int[vec_len];
+    for (int i = 0; i < vec_len; i++){
+      sh_vec[i] = i;
+    } 
+
+    // shuffle
+    for (int i = 0; i < vec_len; i++){
+      int rnd = Random.Range(0, vec_len);
+      int temp = sh_vec[rnd];
+      sh_vec[rnd] = sh_vec[i];
+      sh_vec[i] = temp;
+    }
+
+    return sh_vec;
   }
 }

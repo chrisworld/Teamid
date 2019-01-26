@@ -606,6 +606,21 @@ PrefabInstance:
       propertyPath: textPoints
       value: 
       objectReference: {fileID: 153960122}
+    - target: {fileID: 3420449626542782240, guid: 6e49927b7a436de40a29b7c2cac2424a,
+        type: 3}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3420449626542782240, guid: 6e49927b7a436de40a29b7c2cac2424a,
+        type: 3}
+      propertyPath: dashDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3420449626542782240, guid: 6e49927b7a436de40a29b7c2cac2424a,
+        type: 3}
+      propertyPath: dashMultiplier
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e49927b7a436de40a29b7c2cac2424a, type: 3}
 --- !u!1 &1252327332

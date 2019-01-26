@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
   }
 
   void OnMessage(int fromDeviceID, JToken data){
-    Debug.Log("message from " + fromDeviceID + "data");
+    Debug.Log("message from " + fromDeviceID + " data: " + data);
     if (data["action"] != null && data["action"].ToString().Equals("spawn") ){
       SpawnPlayer();
     }

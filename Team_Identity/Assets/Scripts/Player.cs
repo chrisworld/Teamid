@@ -58,6 +58,12 @@ public class Player : MonoBehaviour
         if (Input.GetKey("right"))
             direction += Vector2.right;
 
+        if (direction != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
         if (Input.GetKeyDown("space"))
             Dash();
 

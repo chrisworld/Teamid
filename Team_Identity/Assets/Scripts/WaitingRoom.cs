@@ -48,6 +48,8 @@ public class WaitingRoom : MonoBehaviour
     Debug.Log("All Players ready: " + ready_player + " NPCs: " + total_npcs);
     is_ready = true;
     spawner.SpawnNPCs(total_npcs);
+
+        // TODO: signal Game manager to start game, hand over the list of players
   }
 
 

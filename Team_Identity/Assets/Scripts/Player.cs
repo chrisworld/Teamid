@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     static private List<Sprite> spritelist = new List<Sprite>();
     private int points;
     private Vector2 direction;
-    public float speed;
+    public float speed = 3f;
     private Rigidbody2D rb2d;
     public GameObject textPoints;
     private GameObject locatedArea;
@@ -23,10 +23,12 @@ public class Player : MonoBehaviour
     bool movingDown;
     bool isDashing;
 
-    float dashCooldown;
+    private float nextDash;
+    static float dashCdStat = 2f;
     float dashTimer;
-    public float dashDuration = 0.2f;
-    public int dashMultiplier = 2;
+    float dashEndtime;
+    public float dashDuration = 1f;
+    public float dashMultiplier = 10f;
     Vector2 dashDirection;
 
     // Start is called before the first frame update
@@ -64,27 +66,24 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
 
+        //dash attack
         if (Input.GetKeyDown("space"))
             Dash();
 
         if (isDashing)
         {
-            rb2d.AddForce(dashDirection * speed * dashMultiplier);
-
-            dashTimer -= Time.fixedDeltaTime;
-
-            if (dashTimer <= 0)
+            if(Time.time > dashEndtime)
             {
                 isDashing = false;
-                dashCooldown = 10f;
+                transform.localScale = new Vector3(1f, 1f, 1f);
             }
+ 
         }
-        else
-        {
-            rb2d.AddForce(direction * speed);
-        }
+        //move
+        rb2d.AddForce(direction * speed);
+        
 
-        dashCooldown -= Time.fixedDeltaTime;
+ 
     }
 
     // Update is called once per frame
@@ -102,6 +101,21 @@ public class Player : MonoBehaviour
 
     }
 
+    
+    private void Dash()
+    {
+        if(Time.time > dashTimer) {
+
+            transform.localScale = transform.localScale - new Vector3(0, 0.4f, 0);
+            dashTimer = Time.time + dashCdStat;
+            dashEndtime = Time.time + dashDuration;
+            isDashing = true;
+            dashDirection = direction;
+            rb2d.AddForce(dashDirection * speed * dashMultiplier);
+        }
+
+
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         locatedArea = collision.gameObject;
@@ -171,17 +185,7 @@ public class Player : MonoBehaviour
         spritelist.RemoveAt(rnd);
     }
 
-    private void Dash()
-    {
-        if (dashCooldown <= 0)
-        {
-            isDashing = true;
-            dashTimer = dashDuration;
-            dashDirection = direction;
-        }
-        
-
-    }
+    
 
     private void Move(Vector2 direction)
     {

@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 301177072}
   - component: {fileID: 301177071}
+  - component: {fileID: 301177073}
   m_Layer: 0
   m_Name: AirManager-test
   m_TagString: Untagged
@@ -157,6 +158,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &301177073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301177070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c346a1843a95e448cb3ee0a8608e21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamNames:
+  - Team Red
+  - Team Blue
+  - Team Yellow
+  - Team Green
+  gametime: 0
+  goaltime: 0
+  timeText: {fileID: 0}
+  baseSprites: []
+  spritelist: []
 --- !u!1 &579984110
 GameObject:
   m_ObjectHideFlags: 0

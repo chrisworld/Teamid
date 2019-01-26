@@ -195,39 +195,55 @@ public class Player : MonoBehaviour
 
     public void PlayerInput(JToken data)
     {
-        switch (data["action"].ToString())
+
+        switch(data["element"].ToString())
+
         {
             case "dpad":
-                switch (data["dpad"]["directionchange"]["key"].ToString())
+                if (data["data"]["key"] != null)
                 {
-                    case "up":
-                        movingUp = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
-                        break;
+                    switch (data["data"]["key"].ToString())
+                    {
+                        case "up":
+                            Debug.Log("Pressed Up on D-pad");
+                            movingUp = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
+                            break;
 
-                    case "down":
-                        movingDown = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
-                        break;
+                        case "down":
+                            Debug.Log("Pressed Down on D-pad");
+                            movingDown = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
+                            break;
 
-                    case "left":
-                        movingLeft = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
-                        break;
+                        case "left":
+                            Debug.Log("Pressed Left on D-pad");
+                            movingLeft = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
+                            break;
 
-                    case "right":
-                        movingRight = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
-                        break;
+                        case "right":
+                            Debug.Log("Pressed Right on D-pad");
+                            movingRight = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
+                            break;
 
-                    default:
-                        Debug.Log(data);
-                        break;
+                        default:
+                            Debug.Log(data);
+                            break;
+                    }
                 }
+                
                 break;
 
             case "dash":
-                this.Dash();
+                if (System.Convert.ToBoolean(data["data"]["pressed"].ToString()))
+                {
+                    this.Dash();
+                }
                 break;
 
             case "dodge":
-                this.Dodge();
+                if (System.Convert.ToBoolean(data["data"]["pressed"].ToString()))
+                {
+                    this.Dodge();
+                }
                 break;
 
             default:

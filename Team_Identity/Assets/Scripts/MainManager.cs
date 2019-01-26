@@ -39,7 +39,7 @@ public class MainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeText.GetComponent<Text>().text = ""+gametime;
+        //timeText.GetComponent<Text>().text = ""+gametime;
     }
 
     private void Endgame()

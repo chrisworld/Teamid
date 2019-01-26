@@ -15,7 +15,9 @@ public class Player : MonoBehaviour
     public float speed;
     public float dashDuration;
     public float dashMultiplier;
-    static float dashCdStat = 2f;
+    static readonly float dashCdStat = 2f;
+    static readonly float stealCdStat = 2f;
+    static readonly float depositCdStat = 2f;
 
     private int points;
     private Vector2 direction;
@@ -23,7 +25,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb2d;
     public GameObject textPoints;
     private GameObject locatedArea;
-    private GameObject shield;
 
     bool movingLeft;
     bool movingRight;
@@ -35,6 +36,8 @@ public class Player : MonoBehaviour
     bool stunned = false;
     bool blinkOn = false;
     bool dodging = false;
+    bool stealing = false;
+    bool depositing = false;
     public bool control = true;
 
     private float nextDash;
@@ -43,12 +46,13 @@ public class Player : MonoBehaviour
     float dashEndtime;
     float stunTimer = 3f;
     float stunEndtime;
-    float dodgeTimer = 1f;
-    float dodgeEndtime;
     float nextBlink;
     float blinkIntervall = 0.5f;
+    float stealTimer;
+    float stealEndtime;
+    float depositTimer;
+    float depositEndtime;
     float massReductionStun = 4f;
-    float shieldRotatingSpeed = 20f;
 
     Vector2 dashDirection;
 
@@ -56,8 +60,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shield = gameObject.transform.GetChild(0).gameObject;
-        shield.GetComponent<SpriteRenderer>().enabled = false;
         nextBlink = Time.time;
         gameManager = GameObject.FindGameObjectWithTag("Manager");
         GetRandomIcon();
@@ -124,13 +126,8 @@ public class Player : MonoBehaviour
 
                 //dash attack
                 if (Input.GetKeyDown("space"))
-                {
                     Dash();
-                }
-                if (Input.GetButtonDown("Fire2"))
-                {
-                    Dodge();
-                }
+
                 if (isDashing)
                 {
                     if (Time.time > dashEndtime)
@@ -140,16 +137,6 @@ public class Player : MonoBehaviour
                     }
 
                 }
-                if (dodging)
-                {
-                    shield.transform.Rotate(Vector3.forward, shieldRotatingSpeed * Time.deltaTime);
-                    if (Time.time > dodgeEndtime)
-                    {
-                        dodging = false;
-                        shield.GetComponent<SpriteRenderer>().enabled = false;
-                    }
-                }
-
                 else
                 {
                     //move
@@ -162,15 +149,24 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonUp("Fire1"))
-            if (locatedArea != null && !locatedArea.GetComponent<Area>().team.Equals(team))
+
+        if (locatedArea != null && stealing && !stunned)
+        {
+            if (Time.time > stealEndtime)
             {
                 Steal(locatedArea);
+                stealEndtime = Time.time + stealCdStat;
             }
-            else if (locatedArea != null && locatedArea.GetComponent<Area>().team.Equals(team))
+
+        }
+        else if (locatedArea != null && depositing && !stunned)
+        {
+            if (Time.time > depositEndtime)
             {
                 Deposit(locatedArea);
+                depositEndtime = Time.time + depositEndtime;
             }
+        }
 
     }
 
@@ -193,7 +189,23 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         locatedArea = collision.gameObject;
+        if (!locatedArea.GetComponent<Area>().team.Equals(team))
+        {
+            stealing = true;
+            stealEndtime = Time.time + stealCdStat;
+        }else if (locatedArea.GetComponent<Area>().team.Equals(team))
+        {
+            depositing = true;
+            depositEndtime = Time.time + depositCdStat;
+        }
+        
         Debug.Log("Entered " + locatedArea);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        locatedArea = null;
+        stealing = false;
+        depositing = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -202,26 +214,11 @@ public class Player : MonoBehaviour
         {
             if (collision.gameObject.tag == "Player")
             {
-                if (collision.gameObject.GetComponent<Player>().dodging != true)
-                {
-                    //stun the other
-                    collision.gameObject.GetComponent<Player>().GetStunned();
-                }
-                else
-                {
-                    //become stunned yourself
-                    GetStunned();
-                }
+                collision.gameObject.GetComponent<Player>().GetStunned();
             }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        Debug.Log("Left " + locatedArea);
-        locatedArea = null;
-
-    }
 
     public void PlayerInput(JToken data)
     {
@@ -305,12 +302,7 @@ public class Player : MonoBehaviour
 
     private void Dodge()
     {
-        if (!isDashing)
-        {
-            shield.GetComponent<SpriteRenderer>().enabled = true;
-            dodging = true;
-            dodgeEndtime = Time.time + dodgeTimer;
-        }
+
     }
 
     private void Steal(GameObject areaObject)
@@ -328,5 +320,34 @@ public class Player : MonoBehaviour
         area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
         this.points--;
         textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+    }
+    private void GetRandomTeam()
+    {
+        if (gameManager.GetComponent<MainManager>().teamACount == gameManager.GetComponent<MainManager>().teamBCount)
+        {
+            int rnd = UnityEngine.Random.Range(0, 2);
+            team = gameManager.GetComponent<MainManager>().teamNames[rnd];
+            if (rnd == 0)
+            {
+                gameManager.GetComponent<MainManager>().teamACount++;
+            }
+            else if (rnd == 1)
+            {
+                gameManager.GetComponent<MainManager>().teamBCount++;
+            }
+        }
+        else
+        if (gameManager.GetComponent<MainManager>().teamACount > gameManager.GetComponent<MainManager>().teamBCount)
+        {
+            team = gameManager.GetComponent<MainManager>().teamNames[1];
+            gameManager.GetComponent<MainManager>().teamBCount++;
+        }
+        else
+        if (gameManager.GetComponent<MainManager>().teamACount < gameManager.GetComponent<MainManager>().teamBCount)
+        {
+            team = gameManager.GetComponent<MainManager>().teamNames[0];
+            gameManager.GetComponent<MainManager>().teamACount++;
+        }
+
     }
 }

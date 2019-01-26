@@ -7,7 +7,9 @@ using UnityEngine.UI;
 
 public class MainManager : MonoBehaviour
 {
-    public string[] teamNames = { "Team Red", "Team Blue", "Team Yellow", "Team Green" };
+    public string[] teamNames = { "Team A", "Team B"};
+    public int teamACount = 0;
+    public int teamBCount = 0;
     public int gametime = 0;
     public int goaltime;
     public GameObject timeText;

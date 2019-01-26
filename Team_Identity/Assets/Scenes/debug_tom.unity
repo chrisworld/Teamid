@@ -413,6 +413,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3420449626542782240, guid: 6e49927b7a436de40a29b7c2cac2424a,
+        type: 3}
+      propertyPath: team
+      value: Team B
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e49927b7a436de40a29b7c2cac2424a, type: 3}
 --- !u!1 &1252327332 stripped
@@ -505,7 +510,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
       propertyPath: team
-      value: Team Green
+      value: Team B
       objectReference: {fileID: 0}
     - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
       propertyPath: text
@@ -658,6 +663,10 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 1252327332}
+    - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
+      propertyPath: team
+      value: Team A
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
 --- !u!1001 &7157994071390980359

@@ -28,9 +28,12 @@ public class Player : MonoBehaviour
     bool movingRight;
     bool movingUp;
     bool movingDown;
+
+    //states
     bool isDashing;
     bool stunned = false;
     bool blinkOn = false;
+    bool dodging = false;
     public bool control = true;
 
     private float nextDash;
@@ -256,7 +259,7 @@ public class Player : MonoBehaviour
 
     private void Dodge()
     {
-
+        
     }
 
     private void Steal(GameObject areaObject)

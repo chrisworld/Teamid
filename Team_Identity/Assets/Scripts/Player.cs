@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Player : MonoBehaviour
     private int points;
     public float speed;
     private Rigidbody2D rb2d;
+    public GameObject textPoints;
+    private GameObject locatedArea;
 
     // Start is called before the first frame update
     void Start()
@@ -37,9 +40,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetButtonUp("Fire1"))
+            if(locatedArea != null)
+        {
+            Steal(locatedArea);
+        }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        locatedArea = collision.gameObject;
+        Debug.Log("Entered " + locatedArea);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log("Left " + locatedArea);
+        locatedArea = null;
+        
+    }
 
     static void IconBackToList(Sprite sprite)
     {
@@ -69,9 +88,13 @@ public class Player : MonoBehaviour
 
     }
 
-    private void Steal()
+    private void Steal(GameObject areaObject)
     {
-
+        Area area = areaObject.GetComponent<Area>();
+        area.points--;
+        area.text.GetComponent<Text>().text = area.points + " Points in Area " + team;
+        this.points++;
+        textPoints.GetComponent<Text>().text = points + " points in the backpack.";
     }
     private void Deposit()
     {

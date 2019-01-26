@@ -10,11 +10,23 @@
     position: absolute;
     top: 20%;
     left: 10%;
-    width: 80%;
-    height: 60%;
+    width: 25%;
+    height: 25%;
     background-size: contain;
     background-repeat: no-repeat;
   }
+  
+  #ready_button{
+    background-image: url("ready_button.png");
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    width: 25%;
+    height: 250%;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
   </style>
   
   <script type="text/javascript">
@@ -22,8 +34,8 @@
     var airconsole;
     function App() {
 
-    /* JavaScript / Functionality. Add functions and evens here */ 
-    this.airconsole = new AirConsole({"orientation":"portrait"});
+      /* JavaScript / Functionality. Add functions and evens here */ 
+      this.airconsole = new AirConsole({"orientation":"landscape"});
       
       /*
        * Here we are adding support for mouse events manually.
@@ -51,9 +63,10 @@
     }
 
     App.prototype.sendMessageToScreen = function(msg){
-      console.log("spawn button press");
+      console.log("message to screen action");
       this.airconsole.message(AirConsole.SCREEN, {"action":msg});
     }
+
 
 
   </script>
@@ -61,5 +74,6 @@
 <body onload="window.app = new App()">
   <!-- Add your HTML elements here -->
   <div id="spawn_button" ontouchstart="window.app.sendMessageToScreen('spawn')"> </div>
+  <div id="ready_button" ontouchstart="window.app.sendMessageToScreen('ready')"> </div>
 </body>
 </html>

@@ -9,24 +9,25 @@ public class Spawner : MonoBehaviour
   public Transform[] spawn_positions;
   public GameObject player_prefab;
   public GameObject npc_prefab;
-  public float spawn_range = 20f; 
+  public float spawn_range = 20f;
 
   private int spawn_index;
   private List<Player> player_list = new List<Player>();
   private int[] shuffled_index;
 
-  void Start()
-  {
-    shuffled_index = ShuffledVector(spawn_positions.Length);
-    spawn_index = 0;
-  }
+    // Start is called before the first frame update
+    void Start()
+    {
+        shuffled_index = ShuffledVector(spawn_positions.Length);
+        spawn_index = 0;
+    }
 
-  // Start is called before the first frame update
+  
   public Player SpawnPlayer()
   {
     Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
     spawn_index += 1;
-    Vector2 spawnPosition = new Vector2 (spawn_pos.position.x + Random.Range(-spawn_range, spawn_range), spawn_pos.position.y + Random.Range(-spawn_range, spawn_range));
+    Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
     Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
     GameObject player = (GameObject)Instantiate (player_prefab, spawnPosition, spawnRotation);
     return player.GetComponent<Player>();
@@ -40,7 +41,7 @@ public class Spawner : MonoBehaviour
     {
       Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
       spawn_index += 1;
-      Vector2 spawnPosition = new Vector2 (spawn_pos.position.x + Random.Range(-spawn_range, spawn_range), spawn_pos.position.y + Random.Range(-spawn_range, spawn_range));
+      Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
       Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
       npc_index += 1;
       GameObject npcs = (GameObject)Instantiate (npc_prefab, spawnPosition, spawnRotation);

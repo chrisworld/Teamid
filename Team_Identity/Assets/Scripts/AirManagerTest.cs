@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 public class AirManagerTest : MonoBehaviour
 {
-
+    public Spawner spawner;
     public GameObject playerPrefab;
 
     public Dictionary<int, Player> players = new Dictionary<int, Player>();
@@ -43,8 +43,9 @@ public class AirManagerTest : MonoBehaviour
         }
 
         //Instantiate player prefab, store device id + player script in a dictionary
-        GameObject newPlayer = Instantiate(playerPrefab, transform.position, transform.rotation) as GameObject;
-        players.Add(deviceID, newPlayer.GetComponent<Player>());
+        //GameObject newPlayer = Instantiate(playerPrefab, transform.position, transform.rotation) as GameObject;
+        Player newPlayer = spawner.SpawnPlayer();
+        players.Add(deviceID, newPlayer);
     }
 
     void OnMessage(int from, JToken data)

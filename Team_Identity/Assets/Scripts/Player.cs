@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private string team;
+    public string team;
     public Sprite icon;
     static public Sprite[] baseSprites;
     static private List<Sprite> spritelist = new List<Sprite>();
@@ -45,6 +45,10 @@ public class Player : MonoBehaviour
         {
             Steal(locatedArea);
         }
+        else if(locatedArea != null && locatedArea.GetComponent<Area>().team.Equals(team))
+            {
+                Deposit(locatedArea);
+            }
 
     }
 

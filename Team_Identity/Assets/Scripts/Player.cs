@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,31 +11,80 @@ public class Player : MonoBehaviour
     static public Sprite[] baseSprites;
     static private List<Sprite> spritelist = new List<Sprite>();
     private int points;
+    private Vector2 direction;
     public float speed;
     private Rigidbody2D rb2d;
     public GameObject textPoints;
     private GameObject locatedArea;
 
+    bool movingLeft;
+    bool movingRight;
+    bool movingUp;
+    bool movingDown;
+    bool isDashing;
+
+    float dashCooldown;
+    float dashTimer;
+    public float dashDuration = 0.2f;
+    public int dashMultiplier = 2;
+    Vector2 dashDirection;
+
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-
-
+        direction = new Vector2(0, 0);
     }
 
     private void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        direction = Vector2.zero;
 
-        //Store the current vertical input in the float moveVertical.
-        float moveVertical = Input.GetAxisRaw("Vertical");
+        if (movingUp)
+            direction += Vector2.up;
+        if (movingDown)
+            direction += Vector2.down;
+        if (movingLeft)
+            direction += Vector2.left;
+        if (movingRight)
+            direction += Vector2.right;
 
-        //Use the two store floats to create a new Vector2 variable movement.
-        Vector2 movement = new Vector2(moveHorizontal, moveVertical);
+        if (Input.GetKey("up"))
+            direction += Vector2.up;
+        if (Input.GetKey("down"))
+            direction += Vector2.down;
+        if (Input.GetKey("left"))
+            direction += Vector2.left;
+        if (Input.GetKey("right"))
+            direction += Vector2.right;
 
-        //Call the AddForce function of our Rigidbody2D rb2d supplying movement multiplied by speed to move our player.
-        rb2d.AddForce(movement * speed);
+        if (direction != Vector2.zero)
+        {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
+        if (Input.GetKeyDown("space"))
+            Dash();
+
+        if (isDashing)
+        {
+            rb2d.AddForce(dashDirection * speed * dashMultiplier);
+
+            dashTimer -= Time.fixedDeltaTime;
+
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+                dashCooldown = 10f;
+            }
+        }
+        else
+        {
+            rb2d.AddForce(direction * speed);
+        }
+
+        dashCooldown -= Time.fixedDeltaTime;
     }
 
     // Update is called once per frame
@@ -65,6 +115,49 @@ public class Player : MonoBehaviour
         
     }
 
+    public void PlayerInput(JToken data)
+    {
+        switch(data["action"].ToString())
+        {
+            case "dpad":
+                switch (data["dpad"]["directionchange"]["key"].ToString())
+                {
+                    case "up":
+                        movingUp = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
+                        break;
+
+                    case "down":
+                        movingDown = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
+                        break;
+
+                    case "left":
+                        movingLeft = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
+                        break;
+
+                    case "right":
+                        movingRight = System.Convert.ToBoolean(data["dpad"]["directionchange"]["pressed"]);
+                        break;
+
+                    default:
+                        Debug.Log(data);
+                        break;
+                }
+                break;
+
+            case "dash":
+                this.Dash();
+                break;
+
+            case "dodge":
+                this.Dodge();
+                break;
+
+            default:
+                Debug.Log(data);
+                break;
+        }
+    }
+
     static void IconBackToList(Sprite sprite)
     {
         spritelist.Add(sprite);
@@ -73,17 +166,24 @@ public class Player : MonoBehaviour
 
     private void GetIcon(Sprite icon)
     {
-        int rnd = Random.Range(0, spritelist.Count);
+        int rnd = UnityEngine.Random.Range(0, spritelist.Count);
         gameObject.GetComponent<SpriteRenderer>().sprite = spritelist[rnd];
         spritelist.RemoveAt(rnd);
     }
 
     private void Dash()
     {
+        if (dashCooldown <= 0)
+        {
+            isDashing = true;
+            dashTimer = dashDuration;
+            dashDirection = direction;
+        }
+        
 
     }
 
-    private void Move()
+    private void Move(Vector2 direction)
     {
 
     }

@@ -41,10 +41,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (Input.GetButtonUp("Fire1"))
-            if(locatedArea != null)
+            if(locatedArea != null && !locatedArea.GetComponent<Area>().team.Equals(team))
         {
             Steal(locatedArea);
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -92,12 +93,16 @@ public class Player : MonoBehaviour
     {
         Area area = areaObject.GetComponent<Area>();
         area.points--;
-        area.text.GetComponent<Text>().text = area.points + " Points in Area " + team;
+        area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
         this.points++;
         textPoints.GetComponent<Text>().text = points + " points in the backpack.";
     }
-    private void Deposit()
+    private void Deposit(GameObject areaObject)
     {
-
+        Area area = areaObject.GetComponent<Area>();
+        area.points++;
+        area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
+        this.points--;
+        textPoints.GetComponent<Text>().text = points + " points in the backpack.";
     }
 }

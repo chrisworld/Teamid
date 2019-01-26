@@ -1,133 +1,33 @@
 
 <html>
 <head>
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
-  <script type="text/javascript">
-    //the view manager finds all div containers with the "view" class and lets me show one view while hiding all others
-    //see also: https://github.com/AirConsole/airconsole-view-manager
-    var ViewManager = {
-      views: {},
-      current_view_id: null,
-
-      init: function() {
-        var views = document.querySelectorAll('.view');
-        for (var i = 0; i < views.length; i++) {
-          this.views[views[i].id] = views[i];
-        }
-        return this;
-      },
-
-      show: function(id) {
-        var view = this.views[id];
-        if (view) {
-          this.current_view_id = id;
-          this.hideAll();
-          view.style.display = "block";
-        } else {
-          console.warn("Could not find view with ID:", id);
-        }
-        return this;
-      },
-
-      hideAll: function() {
-        for (var key in this.views) {
-          this.views[key].style.display = "none";
-        }
-      }
-    };
-  </script>
-  <style type=text/css>
-  /* the style sheet dictates what our elements (buttons, backgrounds etc.) will look like. */
-  #background {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-  }
-
-  .button{
-    background: #3B3B3B;
-    font-size: 14px;
-    padding: 5px 10px 5px 10px;
-    border: solid #1f1f1f 2px;
-    width: 100%;
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    left: 25%;
-    top: 25%;
-  }
-
-  .button-active{
-    border: solid #727272 2px;
-  }
-
-  .button-text{
-    position: absolute;
-    color: white;
-    font-family: sans-serif;
-    text-align: center;
-    pointer-events: none;
-    width: 50%;
-    height: 20%;
-    left: 25%;
-    top: 40%;
-  }
-  
-  </style>
-  
-  <script type="text/javascript">
+    <script type="text/javascript"
+            src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
+    <script type="text/javascript">
 
     var airconsole;
-
-    function App() {
-      var me = this;
-      me.airconsole = new AirConsole({"orientation": "landscape", "synchronize_time" : "true"});
-
-      //initialize the view manager and set the first view
-      ViewManager.init();
-  	  ViewManager.show("Start");
-
-      me.airconsole.onMessage = function(from, data) {
-        console.log("onMessage", from, data);
-      };
-      
-      me.airconsole.onReady = function(code) {
-        console.log("onReady", code);
-      };
-      
-      me.airconsole.onCustomDeviceStateChange = function(device_id, device_data){
-        //to see logs from the controller, start your game in the "virtual controllers" browser start mode from Unity and open your browser's developer console. 
-        console.log("onCustomDeviceStateChange", device_id, device_data);
-
-        //check if the device that sent the custom device state change is the Screen (i.e. the Unity Game, in this case), and not one of the other controllers
-        if (device_id == AirConsole.SCREEN){
-          //check if the CustomDeviceStateChange data contains any view data
-          if (device_data["view"] != null && device_data["view"] != ""){
-            //set a new view accordingly
-            ViewManager.show(device_data["view"]);
-          }
-          
-          //check if there's any player color data
-          if (device_data["playerColors"] != null){
-            //check the CustomDeviceStateChange data contains any playerColorData for this particular device
-            if (device_data["playerColors"][me.airconsole.getDeviceId()]){
-              //this works for named colors. If you want to use colors that don't have a name, you could pass a hex code instead of a string/name
-              document.getElementById("background").style.backgroundColor = device_data["playerColors"][me.airconsole.getDeviceId()];
-            }
-          }
-        }
-      };
+    /**
+     * Sets up the communication to the screen.
+     */
+    function init() {
+      airconsole = new AirConsole({"orientation": "portrait"});
+     
+      airconsole.onActivePlayersChange = function(player_number) {
+        updateText(player_number);
+      }
+      airconsole.onReady = function() {
+        updateText();
+      }
 
       /*
-       * Here we are adding support for mouse events manually.
-       * --> WE STRONGLY ENCOURAGE YOU TO USE THE AIRCONSOLE CONTROLS LIBRARY
-       * WHICH IS EVEN BETTER (BUT WE DONT WANT TO BLOAT THE CODE HERE).
-       * https://github.com/AirConsole/airconsole-controls/
-       * 
-       * DO NOT USE ONCLICK HANDLERS.
-       * THEY ADD A 200MS DELAY!
-       */
+      * Here we are adding support for mouse events manually.
+      * --> WE STRONGLY ENCOURAGE YOU TO USE THE AIRCONSOLE CONTROLS LIBRARY
+      * WHICH IS EVEN BETTER (BUT WE DONT WANT TO BLOAT THE CODE HERE).
+      * https://github.com/AirConsole/airconsole-controls/
+      * 
+      * DO NOT USE ONCLICK HANDLERS.
+      * THEY ADD A 200MS DELAY!
+      */
       if (!("ontouchstart" in document.createElement("div"))) {
         var elements = document.getElementsByTagName("*");
         for (var i = 0; i < elements.length; ++i) {
@@ -144,37 +44,77 @@
       }
     }
 
-    App.prototype.pressIngameScreenButton = function(msg) {
-      this.airconsole.message(AirConsole.SCREEN, {"action": "ingame-button"});
-    };
+	function updateText(player_number) {
+	  var div = document.getElementById("player_id");
+      if (airconsole.getActivePlayerDeviceIds().length == 0) {
+        div.innerHTML = "Waiting for more players.";
+      } else if (player_number == undefined) {
+        div.innerHTML = "This is a 2 player game";
+      } else if (player_number == 0) {
+        div.innerHTML = "You are the player on the left";
+      } else if (player_number == 1) {
+        div.innerHTML = "You are the player on the right";
+      };
+	}
 
-    App.prototype.pressMenuScreenButton = function(msg) {
-      this.airconsole.message(AirConsole.SCREEN, {"action": "menu-button"});
-    };
+    /**
+     * Tells the screen to move the paddle of this player.
+     * @param amount
+     */
+    function move(amount) {
+      airconsole.message(AirConsole.SCREEN, {move: amount})
+    }
 
-    App.prototype.pressPauseScreenButton = function(msg) {
-      this.airconsole.message(AirConsole.SCREEN, {"action": "pause-button"});
-    };
+    </script>
+    <style type="text/css">
+        @font-face {
+            font-family: 'Arial';
+        }
 
-  </script>
- 
+        html, body {
+            height: 100%;
+            margin: 0px;
+            font-family: 'PressStart2P', sans-serif;
+            color: white;
+            text-align: center;
+            background-color: black;
+        }
+
+        .button {
+            display: inline-block;
+            height: 45%;
+            width: 98%;
+            background-color: #222;
+            position: relative;
+        }
+
+        .button_label {
+            position: absolute;
+            left: 0px;
+            width: 100%;
+            top: 50%;
+            margin-top: -6px;
+        }
+
+        #player_id {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            width: 100%;
+            margin-top: -8px;
+            color: #777;
+        }
+    </style>
 </head>
-<body onload="window.app = new App()">
-<div id="background"></div>
-<div class="view" id="Start">
-      <div style="color:white;">No Controller view has been set</div>
-  </div>
-  <div class="view" id="Ingame">
-      <div class="button" id="ingame-button" ontouchstart="window.app.pressIngameScreenButton()"></div>
-      <div class="button-text">Ingame Screen Button</div>
-  </div>
-  <div class="view" id="Menu">
-      <div class="button" id="menu-button" ontouchstart="window.app.pressMenuScreenButton()"></div>
-      <div class="button-text">Menu Screen Button</div>
-  </div>
-  <div class="view" id="Pause">
-      <div class="button" id="pause-button" ontouchstart="window.app.pressPauseScreenButton()"></div>
-      <div class="button-text">Pause Screen Button</div>
-  </div>
+<body onload="init()">
+    <div style="height: 1%"></div>
+    <div class=button ontouchstart="move(5)" ontouchend="move(0)">
+        <div class="button_label">UP</div>
+    </div>
+    <div style="height: 8%"></div>
+    <div class=button ontouchstart="move(-5)" ontouchend="move(0)">
+        <div class="button_label">DOWN</div>
+    </div>
+    <div id="player_id"></div>
 </body>
 </html>

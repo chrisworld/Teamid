@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb2d;
     public GameObject textPoints;
     private GameObject locatedArea;
+    private GameObject shield;
 
     bool movingLeft;
     bool movingRight;
@@ -46,6 +47,8 @@ public class Player : MonoBehaviour
     float dashEndtime;
     float stunTimer = 3f;
     float stunEndtime;
+    float dodgeTimer = 1f;
+    float dodgeEndtime;
     float nextBlink;
     float blinkIntervall = 0.5f;
     float stealTimer;
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
     float depositTimer;
     float depositEndtime;
     float massReductionStun = 4f;
+    float shieldRotatingSpeed = 20f;
 
     Vector2 dashDirection;
 
@@ -60,6 +64,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shield = gameObject.transform.GetChild(0).gameObject;
+        shield.GetComponent<SpriteRenderer>().enabled = false;
+
         nextBlink = Time.time;
         gameManager = GameObject.FindGameObjectWithTag("Manager");
         GetRandomIcon();
@@ -127,6 +134,10 @@ public class Player : MonoBehaviour
                 //dash attack
                 if (Input.GetKeyDown("space"))
                     Dash();
+                if (Input.GetButtonDown("Fire2"))
+                {
+                    Dodge();
+                }
 
                 if (isDashing)
                 {
@@ -141,6 +152,15 @@ public class Player : MonoBehaviour
                 {
                     //move
                     rb2d.AddForce(direction * speed);
+                }
+                if (dodging)
+                {
+                    shield.transform.Rotate(Vector3.forward, shieldRotatingSpeed * Time.deltaTime);
+                    if (Time.time > dodgeEndtime)
+                    {
+                        dodging = false;
+                        shield.GetComponent<SpriteRenderer>().enabled = false;
+                    }
                 }
             }
         }
@@ -214,6 +234,17 @@ public class Player : MonoBehaviour
         {
             if (collision.gameObject.tag == "Player")
             {
+                if (collision.gameObject.GetComponent<Player>().dodging != true)
+                {
+                    //stun the other
+                    collision.gameObject.GetComponent<Player>().GetStunned();
+                }
+                else
+                {
+                    //become stunned yourself
+                    GetStunned();
+                }
+
                 collision.gameObject.GetComponent<Player>().GetStunned();
             }
         }
@@ -302,7 +333,12 @@ public class Player : MonoBehaviour
 
     private void Dodge()
     {
-
+        if (!isDashing)
+        {
+            shield.GetComponent<SpriteRenderer>().enabled = true;
+            dodging = true;
+            dodgeEndtime = Time.time + dodgeTimer;
+        }
     }
 
     private void Steal(GameObject areaObject)

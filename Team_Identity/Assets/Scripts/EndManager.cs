@@ -25,10 +25,15 @@ public class EndManager : MonoBehaviour
         TextTimer.GetComponent<Text>().text = "Restart in " + restartTimer;
         if(restartTimer<=0)
         {
-            SceneManager.LoadScene(0);
+            
         }
     }
 
+    public void RestartGame()
+    {
+
+        SceneManager.LoadScene(0);
+    }
     IEnumerator Timer()
     {
         while (true)

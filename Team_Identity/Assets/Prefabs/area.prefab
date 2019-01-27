@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4032738549840433482}
   - component: {fileID: 4032738549840433483}
   - component: {fileID: 4032738549840433480}
-  - component: {fileID: 4032738549840433481}
   - component: {fileID: 2022182540}
+  - component: {fileID: 2008085572}
   m_Layer: 9
   m_Name: area
   m_TagString: Untagged
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4032738549840433484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.84, y: 2.588, z: 0}
-  m_LocalScale: {x: 1.832852, y: 1.6225959, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 2.6040504}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -69,10 +69,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -335376975
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 89e42e8f0e05b4d99b5c6004a59d06f1, type: 3}
-  m_Color: {r: 0.8773585, g: 0.27717656, b: 0.16967781, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9e404403dc73432409a548811283c87d, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -103,8 +103,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &4032738549840433481
-BoxCollider2D:
+--- !u!114 &2022182540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4032738549840433484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d23ab1a0272ef43abbad5a75c8f115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: Team A
+  points: 0
+  active: 0
+  text: {fileID: 0}
+--- !u!60 &2008085572
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -120,28 +136,15 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.2, y: 1.8}
+    oldSize: {x: 41.76, y: 41.739998}
     newSize: {x: 21.28, y: 21.28}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 3.2, y: 1.8}
-  m_EdgeRadius: 0
---- !u!114 &2022182540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4032738549840433484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4d23ab1a0272ef43abbad5a75c8f115, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  team: Team Red
-  points: 0
-  active: 0
-  text: {fileID: 0}
+  m_Points:
+    m_Paths:
+    - - {x: -20.880196, y: 20.87}
+      - {x: -0.7976638, y: -19.167767}
+      - {x: 0.7976589, y: -19.167767}
+      - {x: 20.880196, y: 20.87}

@@ -112,12 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &238145586 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7157994071131729300, guid: 7219e7f9e3c1acb49ac5d1cb4777ddac,
-    type: 3}
-  m_PrefabInstance: {fileID: 1172515025}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &310170575
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,17 +143,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamNames:
-  - Team Red
-  - Team Blue
-  - Team Yellow
-  - Team Green
+  - TeamA
+  - TeamB
   teamACount: 0
   teamBCount: 0
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
   gametime: 0
   goaltime: 10
-  timeText: {fileID: 238145586}
+  timeText: {fileID: 0}
   baseSprites: []
   spritelist: []
 --- !u!114 &310170577
@@ -728,7 +720,7 @@ PrefabInstance:
       objectReference: {fileID: 1565453281}
     - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
       propertyPath: team
-      value: Team B
+      value: TeamB
       objectReference: {fileID: 0}
     - target: {fileID: 4032738549840433481, guid: 872634ed2beb3bf418c4eb15ba07fc94,
         type: 3}
@@ -755,6 +747,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4032738549840433481, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
+    - {fileID: 2008085572, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
 --- !u!1 &1565453281 stripped
 GameObject:
@@ -838,6 +831,10 @@ PrefabInstance:
       propertyPath: text
       value: 
       objectReference: {fileID: 1239066130}
+    - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
+      propertyPath: team
+      value: TeamA
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
 --- !u!1 &1893531252 stripped

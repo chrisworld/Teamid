@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    public string[] teamNames = { "Team A", "Team B"};
+    public string[] teamNames = { "TeamA", "TeamB"};
     public int teamACount = 0;
     public int teamBCount = 0;
     public GameObject teamAarea;

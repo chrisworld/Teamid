@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
         gameManager = GameObject.FindGameObjectWithTag("Manager");
 
         GetRandomIcon();
+        GetRandomTeam();
 
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<SpriteRenderer>().enabled = false;
@@ -227,6 +228,7 @@ public class Player : MonoBehaviour
         {
             if (Time.time > depositEndtime)
             {
+                Debug.Log("depositing");
                 depositEndtime = Time.time + depositCdStat;
                 Deposit(locatedArea);
                 
@@ -261,6 +263,7 @@ public class Player : MonoBehaviour
             stealEndtime = Time.time + stealCdStat;
         }else if (locatedArea.GetComponent<Area>().team.Equals(team))
         {
+            Debug.Log("depositing");
             depositing = true;
             depositEndtime = Time.time + depositCdStat;
         }
@@ -269,7 +272,7 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("exited area" + locatedArea);
+        Debug.Log("exited " + locatedArea);
         locatedArea = null;
         stealing = false;
         depositing = false;
@@ -311,22 +314,22 @@ public class Player : MonoBehaviour
                     switch (data["data"]["key"].ToString())
                     {
                         case "up":
-                            Debug.Log("Pressed Up on D-pad");
+                            //Debug.Log("Pressed Up on D-pad");
                             movingUp = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
                             break;
 
                         case "down":
-                            Debug.Log("Pressed Down on D-pad");
+                            //Debug.Log("Pressed Down on D-pad");
                             movingDown = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
                             break;
 
                         case "left":
-                            Debug.Log("Pressed Left on D-pad");
+                           // Debug.Log("Pressed Left on D-pad");
                             movingLeft = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
                             break;
 
                         case "right":
-                            Debug.Log("Pressed Right on D-pad");
+                            //Debug.Log("Pressed Right on D-pad");
                             movingRight = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
                             break;
 

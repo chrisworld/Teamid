@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     float stealEndtime;
     float depositTimer;
     float depositEndtime;
-    float massReductionStun = 4f;
+    float massReductionStun = 6f;
     float shieldRotatingSpeed = 30f;
     int maxPointsHolding = 3;
 
@@ -172,7 +172,7 @@ public class Player : MonoBehaviour
                     if (Time.time > dashEndtime)
                     {
                         isDashing = false;
-                        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 4f, transform.localScale.z);
+                        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
                     }
 
                 }
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            else
+            else if (gameManager.GetComponent<MainManager>().started)
             {
                 //Npc control
                 transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
@@ -243,7 +243,7 @@ public class Player : MonoBehaviour
         if (Time.time > dashTimer)
         {
             FindObjectOfType<SoundManager>().dash.Play();
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 4f, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2f, transform.localScale.z);
             dashTimer = Time.time + dashCdStat;
             dashEndtime = Time.time + dashDuration;
             isDashing = true;
@@ -263,7 +263,7 @@ public class Player : MonoBehaviour
             stealEndtime = Time.time + stealCdStat;
         }else if (locatedArea.GetComponent<Area>().team.Equals(team))
         {
-            Debug.Log("depositing");
+            //Debug.Log("depositing");
             depositing = true;
             depositEndtime = Time.time + depositCdStat;
         }
@@ -351,6 +351,7 @@ public class Player : MonoBehaviour
             case "dodge":
                 if (System.Convert.ToBoolean(data["data"]["pressed"].ToString()))
                 {
+                    Debug.Log("dodge");
                     this.Dodge();
                 }
                 break;

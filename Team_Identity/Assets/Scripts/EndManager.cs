@@ -17,6 +17,7 @@ public class EndManager : MonoBehaviour
         Time.timeScale = 1;
         restartTimer = restartCd;
         Text.GetComponent<Text>().text = MainManager.winningTeam + " won the game with " + MainManager.winningTeamPoints + " : " + MainManager.losingTeamPoints;
+
     }
 
     // Update is called once per frame
@@ -25,7 +26,7 @@ public class EndManager : MonoBehaviour
         TextTimer.GetComponent<Text>().text = "Restart in " + restartTimer;
         if(restartTimer<=0)
         {
-            
+            RestartGame();
         }
     }
 

@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
   public AudioSource defend;
   public AudioSource dash;
   public AudioSource stun;
+  public AudioSource background_theme;
 
   // Singelton instance
   public static SoundManager instance;
@@ -32,13 +33,9 @@ public class SoundManager : MonoBehaviour
       
   }
 
-  // Update is called once per frame
-  void Update()
+  public void StartBackgroundTheme()
   {
-    // debug Sound
-    if (Input.GetKeyDown(KeyCode.M)) defend.Play();
-    if (Input.GetKeyDown(KeyCode.N)) dash.Play();
-    if (Input.GetKeyDown(KeyCode.K)) stun.Play();
-
+    background_theme.Stop();
+    background_theme.Play();
   }
 }

@@ -198,7 +198,7 @@ public class Player : MonoBehaviour
     {
         if (Time.time > dashTimer)
         {
-
+            FindObjectOfType<SoundManager>().dash.Play();
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 4f, transform.localScale.z);
             dashTimer = Time.time + dashCdStat;
             dashEndtime = Time.time + dashDuration;
@@ -332,6 +332,7 @@ public class Player : MonoBehaviour
     public void GetStunned()
     {
         //Beginn of stun
+        FindObjectOfType<SoundManager>().stun.Play();
         stunned = true;
         stunEndtime = Time.time + stunTimer;
         gameObject.GetComponent<Rigidbody2D>().mass = gameObject.GetComponent<Rigidbody2D>().mass / massReductionStun;
@@ -341,6 +342,7 @@ public class Player : MonoBehaviour
     {
         if (!isDashing)
         {
+            FindObjectOfType<SoundManager>().defend.Play();
             shield.GetComponent<SpriteRenderer>().enabled = true;
             dodging = true;
             dodgeEndtime = Time.time + dodgeTimer;

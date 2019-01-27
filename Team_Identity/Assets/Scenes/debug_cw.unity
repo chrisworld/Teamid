@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 77989511}
   - component: {fileID: 77989512}
   - component: {fileID: 77989513}
+  - component: {fileID: 77989514}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -161,6 +162,7 @@ MonoBehaviour:
   defend: {fileID: 77989511}
   dash: {fileID: 77989512}
   stun: {fileID: 77989513}
+  background_theme: {fileID: 0}
 --- !u!82 &77989511
 AudioSource:
   m_ObjectHideFlags: 0
@@ -452,6 +454,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &77989514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77989508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76f42a9267d0dd409c896c4bd2ff8bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &113187296
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,7 +631,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 625928206}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78c346a1843a95e448cb3ee0a8608e21, type: 3}
   m_Name: 
@@ -627,9 +641,15 @@ MonoBehaviour:
   - Team Blue
   - Team Yellow
   - Team Green
+  teamACount: 0
+  teamBCount: 0
+  teamAarea: {fileID: 0}
+  teamBarea: {fileID: 0}
   gametime: 0
   goaltime: 0
   timeText: {fileID: 0}
+  baseSprites: []
+  spritelist: []
 --- !u!4 &625928208
 Transform:
   m_ObjectHideFlags: 0
@@ -1117,7 +1137,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015926778}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 

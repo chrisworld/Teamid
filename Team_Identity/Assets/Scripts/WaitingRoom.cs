@@ -24,6 +24,7 @@ public class WaitingRoom : MonoBehaviour
     is_ready = false;
   }
 
+
   // Add Ready Player in Waiting Room
   public void AddReadyPlayer(int player_id){
     if (players.ContainsKey(player_id)){
@@ -35,6 +36,10 @@ public class WaitingRoom : MonoBehaviour
     Debug.Log("Ready player with id: " + player_id + " ready players: " + ready_player);
     
     List<int> connectedDevices = AirConsole.instance.GetControllerDeviceIds();
+    foreach (int id_dev in connectedDevices){
+      Debug.Log("nickname: " + AirConsole.instance.GetNickname(id_dev) );
+    }
+
     Debug.Log("Amount con Devices: " + connectedDevices.Count);
     
     // check device ids

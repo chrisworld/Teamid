@@ -8,8 +8,12 @@ public class Player : MonoBehaviour
 {
     //sources
     public string team;
+
     public Sprite icon;
+
     public GameObject gameManager;
+    Camera camera;
+    Vector3 righttopForCamera;
 
     // attribute
     public float speed;
@@ -21,6 +25,7 @@ public class Player : MonoBehaviour
 
     private int points;
     private Vector2 direction;
+    Vector2 dashDirection;
 
     private Rigidbody2D rb2d;
     public GameObject textPoints;
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour
     bool dodging = false;
     bool stealing = false;
     bool depositing = false;
+    // if played by player or npc
     public bool control = true;
 
     private float nextDash;
@@ -59,18 +65,38 @@ public class Player : MonoBehaviour
     float shieldRotatingSpeed = 30f;
     int maxPointsHolding = 3;
 
-    Vector2 dashDirection;
+    //Npc values
+    Vector2 destination;
+    float destinationTimer;
+    float destinationEndtime;
+    public static float maxDestinationCdStat = 5f;
+    public static float minDestinationCdStat = 2f;
 
 
+
+    void GetRandomLocation()
+    {
+        destination = new Vector2(
+            Random.Range(-righttopForCamera.x, righttopForCamera.x),
+            Random.Range(-righttopForCamera.y, righttopForCamera.y)
+            );
+
+    }
     // Start is called before the first frame update
     void Start()
     {
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
+        GetRandomLocation();
+
+        gameManager = GameObject.FindGameObjectWithTag("Manager");
+
+        GetRandomIcon();
+
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<SpriteRenderer>().enabled = false;
-
         nextBlink = Time.time;
-        gameManager = GameObject.FindGameObjectWithTag("Manager");
-        GetRandomIcon();
+        
         rb2d = GetComponent<Rigidbody2D>();
         direction = new Vector2(0, 0);
     }
@@ -163,6 +189,18 @@ public class Player : MonoBehaviour
                         shield.GetComponent<SpriteRenderer>().enabled = false;
                     }
                 }
+            }
+            else
+            {
+                //Npc control
+                transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+                if(Time.time > destinationEndtime)
+                {
+                    destinationEndtime = Time.time + Random.Range(minDestinationCdStat, maxDestinationCdStat);
+                    GetRandomLocation();
+                    
+                }
+
             }
         }
     }
@@ -324,7 +362,7 @@ public class Player : MonoBehaviour
 
     private void GetRandomIcon()
     {
-        int rnd = UnityEngine.Random.Range(0, gameManager.GetComponent<MainManager>().spritelist.Count);
+        int rnd = Random.Range(0, gameManager.GetComponent<MainManager>().spritelist.Count);
         gameObject.GetComponent<SpriteRenderer>().sprite = gameManager.GetComponent<MainManager>().spritelist[rnd];
         gameManager.GetComponent<MainManager>().spritelist.RemoveAt(rnd);
     }

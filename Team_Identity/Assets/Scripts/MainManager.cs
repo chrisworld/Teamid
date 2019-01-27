@@ -13,6 +13,7 @@ public class MainManager : MonoBehaviour
     public int teamBCount = 0;
     public GameObject teamAarea;
     public GameObject teamBarea;
+
     public int gametime = 0;
     public int goaltime;
     public int countdownTime = 20;
@@ -67,6 +68,8 @@ public class MainManager : MonoBehaviour
                 if (devicesList.Count >= 2)
                 {
                     started = true;
+                    FindObjectOfType<SoundManager>().StartBackgroundTheme();
+
                     countdown.SetActive(false);
                     this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
                     

@@ -14,13 +14,17 @@ public class MainManager : MonoBehaviour
     public GameObject teamAarea;
     public GameObject teamBarea;
     public int gametime = 0;
-    public int goaltime = 10;
+    public int goaltime;
+    public int countdownTime = 20;
     public GameObject timeText;
     public Sprite[] baseSprites;
     public List<Sprite> spritelist = new List<Sprite>();
     public static string winningTeam;
     public static int winningTeamPoints;
     public static int losingTeamPoints;
+
+    public GameObject countdown;
+    bool started = false;
 
     void Awake()
     {
@@ -53,7 +57,26 @@ public class MainManager : MonoBehaviour
         {
             Endgame();
         }
+        if(!started)
+        {
+            countdown.GetComponent<Text>().text = "" + countdownTime;
+            
+            if (countdownTime <= 0) {
+                List<int> devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
+                Debug.Log(devicesList.Count);
+                if (devicesList.Count >= 2)
+                {
+                    started = true;
+                    countdown.SetActive(false);
+                    this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
+                    
+                    
+                } }
+        }
+        
         timeText.GetComponent<Text>().text = "Time: "+gametime;
+
+
     }
 
     private void Endgame()
@@ -93,6 +116,11 @@ public class MainManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             gametime++;
+            if(countdownTime > 0)
+            {
+                countdownTime--;
+            }
+            
         }
     }
 

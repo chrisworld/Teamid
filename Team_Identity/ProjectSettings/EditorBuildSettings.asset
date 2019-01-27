@@ -8,7 +8,13 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/airconsole-test.unity
     guid: 9a7c2825a441a974b92d856bd42eb3b7
+  - enabled: 1
+    path: Assets/Scenes/debug_tom.unity
+    guid: 7b8b312613c239f4aad24887d2cd258d
+  - enabled: 1
+    path: Assets/Scenes/Endgame.unity
+    guid: f34a61184d9b8184ea4467cf0f8871e7
   m_configObjects: {}

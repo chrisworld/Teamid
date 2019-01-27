@@ -150,7 +150,7 @@ MonoBehaviour:
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
   gametime: 0
-  goaltime: 10
+  goaltime: 100
   timeText: {fileID: 0}
   baseSprites: []
   spritelist: []

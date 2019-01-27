@@ -112,6 +112,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &84096568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4032738549840433484, guid: 872634ed2beb3bf418c4eb15ba07fc94,
+    type: 3}
+  m_PrefabInstance: {fileID: 2046924870}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &280310537
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +424,11 @@ PrefabInstance:
       propertyPath: team
       value: Team B
       objectReference: {fileID: 0}
+    - target: {fileID: 3420449626542782240, guid: 6e49927b7a436de40a29b7c2cac2424a,
+        type: 3}
+      propertyPath: textPoints
+      value: 
+      objectReference: {fileID: 1575074984}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e49927b7a436de40a29b7c2cac2424a, type: 3}
 --- !u!1 &1252327332 stripped
@@ -425,6 +436,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7157994070210016931, guid: 7219e7f9e3c1acb49ac5d1cb4777ddac,
     type: 3}
   m_PrefabInstance: {fileID: 7157994071390980359}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1575074984 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7157994071241373629, guid: 7219e7f9e3c1acb49ac5d1cb4777ddac,
+    type: 3}
+  m_PrefabInstance: {fileID: 7157994071390980359}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1588652461 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4032738549840433484, guid: 872634ed2beb3bf418c4eb15ba07fc94,
+    type: 3}
+  m_PrefabInstance: {fileID: 4032738549983567815}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2046924870
 PrefabInstance:
@@ -587,9 +610,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
         type: 3}
+      propertyPath: teamNames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
       propertyPath: timeText
       value: 
       objectReference: {fileID: 867443859}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
+      propertyPath: teamAarea
+      value: 
+      objectReference: {fileID: 1588652461}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
+      propertyPath: teamBarea
+      value: 
+      objectReference: {fileID: 84096568}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
+      propertyPath: teamNames.Array.data[0]
+      value: Team A
+      objectReference: {fileID: 0}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
+      propertyPath: teamNames.Array.data[1]
+      value: Team B
+      objectReference: {fileID: 0}
+    - target: {fileID: 43394483474304763, guid: 1674bdeafd9f6e648b514bb05134461a,
+        type: 3}
+      propertyPath: goaltime
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1674bdeafd9f6e648b514bb05134461a, type: 3}
 --- !u!1001 &4032738549983567815

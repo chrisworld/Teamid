@@ -56,7 +56,8 @@ public class Player : MonoBehaviour
     float depositTimer;
     float depositEndtime;
     float massReductionStun = 4f;
-    float shieldRotatingSpeed = 20f;
+    float shieldRotatingSpeed = 30f;
+    int maxPointsHolding = 3;
 
     Vector2 dashDirection;
 
@@ -174,17 +175,19 @@ public class Player : MonoBehaviour
         {
             if (Time.time > stealEndtime)
             {
-                Steal(locatedArea);
                 stealEndtime = Time.time + stealCdStat;
+                Steal(locatedArea);
+                
             }
 
         }
-        else if (locatedArea != null && depositing && !stunned)
+        if (locatedArea != null && depositing && !stunned)
         {
             if (Time.time > depositEndtime)
             {
+                depositEndtime = Time.time + depositCdStat;
                 Deposit(locatedArea);
-                depositEndtime = Time.time + depositEndtime;
+                
             }
         }
 
@@ -209,6 +212,7 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         locatedArea = collision.gameObject;
+
         if (!locatedArea.GetComponent<Area>().team.Equals(team))
         {
             stealing = true;
@@ -223,9 +227,11 @@ public class Player : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("exited area" + locatedArea);
         locatedArea = null;
         stealing = false;
         depositing = false;
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -343,19 +349,25 @@ public class Player : MonoBehaviour
 
     private void Steal(GameObject areaObject)
     {
-        Area area = areaObject.GetComponent<Area>();
-        area.points--;
-        area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
-        this.points++;
-        textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+        if (points < maxPointsHolding)
+        {
+            Area area = areaObject.GetComponent<Area>();
+            area.points--;
+            area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
+            this.points++;
+            textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+        }
     }
     private void Deposit(GameObject areaObject)
     {
-        Area area = areaObject.GetComponent<Area>();
-        area.points++;
-        area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
-        this.points--;
-        textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+        if (points > 0)
+        {
+            Area area = areaObject.GetComponent<Area>();
+            area.points++;
+            area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
+            this.points--;
+            textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+        }
     }
     private void GetRandomTeam()
     {

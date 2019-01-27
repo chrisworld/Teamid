@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class MainManager : MonoBehaviour
@@ -10,11 +11,16 @@ public class MainManager : MonoBehaviour
     public string[] teamNames = { "Team A", "Team B"};
     public int teamACount = 0;
     public int teamBCount = 0;
+    public GameObject teamAarea;
+    public GameObject teamBarea;
     public int gametime = 0;
-    public int goaltime;
+    public int goaltime = 10;
     public GameObject timeText;
     public Sprite[] baseSprites;
     public List<Sprite> spritelist = new List<Sprite>();
+    public static string winningTeam;
+    public static int winningTeamPoints;
+    public static int losingTeamPoints;
 
     void Awake()
     {
@@ -29,7 +35,7 @@ public class MainManager : MonoBehaviour
         {
             spritelist.Add(baseSprites[i]);
         }
-        Debug.Log(spritelist.Count);
+        Debug.Log(spritelist.Count + "Sprites in IconList loaded");
     }
     // Start is called before the first frame update
     void Start()
@@ -41,12 +47,36 @@ public class MainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //timeText.GetComponent<Text>().text = ""+gametime;
+        if(gametime >= goaltime)
+        {
+            Endgame();
+        }
+        timeText.GetComponent<Text>().text = "Time: "+gametime;
     }
 
     private void Endgame()
     {
+        Debug.Log("End triggered");
+        if(teamAarea.GetComponent<Area>().points > teamBarea.GetComponent<Area>().points)
+        {
+            winningTeam = "Team A";
+            winningTeamPoints = teamAarea.GetComponent<Area>().points;
+            losingTeamPoints = teamBarea.GetComponent<Area>().points;
+        }
+        else if (teamAarea.GetComponent<Area>().points < teamBarea.GetComponent<Area>().points)
+        {
+            winningTeam = "Team B";
+            losingTeamPoints = teamAarea.GetComponent<Area>().points;
+            winningTeamPoints = teamBarea.GetComponent<Area>().points;
+        }
+        else if (teamAarea.GetComponent<Area>().points == teamBarea.GetComponent<Area>().points)
+        {
+            winningTeam = "Both";
+            losingTeamPoints = teamAarea.GetComponent<Area>().points;
+            winningTeamPoints = teamBarea.GetComponent<Area>().points;
+        }
 
+        SceneManager.LoadScene("Endgame");
     }
 
 

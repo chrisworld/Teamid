@@ -8,12 +8,6 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/airconsole-test.unity
-    guid: 9a7c2825a441a974b92d856bd42eb3b7
-  - enabled: 0
-    path: Assets/Scenes/debug_tom.unity
-    guid: 7b8b312613c239f4aad24887d2cd258d
   - enabled: 1
     path: Assets/Scenes/level 1.unity
     guid: 4e13c4821d4f1534e82c81ea89557173

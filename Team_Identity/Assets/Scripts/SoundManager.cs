@@ -33,4 +33,9 @@ public class SoundManager : MonoBehaviour
       
   }
 
+  public void StartBackgroundTheme()
+  {
+    background_theme.Stop();
+    background_theme.Play();
+  }
 }

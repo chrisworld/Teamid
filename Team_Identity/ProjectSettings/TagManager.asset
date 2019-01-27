@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Area0
+    uniqueID: 130056031
+    locked: 0
   - name: Area
     uniqueID: 3959590321
     locked: 0

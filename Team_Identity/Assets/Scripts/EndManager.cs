@@ -25,7 +25,7 @@ public class EndManager : MonoBehaviour
         TextTimer.GetComponent<Text>().text = "Restart in " + restartTimer;
         if(restartTimer<=0)
         {
-            
+            RestartGame();
         }
     }
 

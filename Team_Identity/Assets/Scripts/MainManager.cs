@@ -25,7 +25,7 @@ public class MainManager : MonoBehaviour
     public static int losingTeamPoints;
 
     public GameObject countdown;
-    bool started = false;
+    public bool started = false;
 
     void Awake()
     {
@@ -65,7 +65,7 @@ public class MainManager : MonoBehaviour
             if (countdownTime <= 0) {
                 List<int> devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
                 Debug.Log(devicesList.Count);
-                if (devicesList.Count >= 2)
+                if (devicesList.Count >= 4)
                 {
                     started = true;
                     FindObjectOfType<SoundManager>().StartBackgroundTheme();
@@ -118,7 +118,10 @@ public class MainManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            gametime++;
+            if (countdownTime <= 0)
+            {
+                gametime++;
+            }
             if(countdownTime > 0)
             {
                 countdownTime--;

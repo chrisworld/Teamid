@@ -9,7 +9,7 @@ public class AirManagerTest : MonoBehaviour
     public Spawner spawner;
     public GameObject playerPrefab;
 
-    public Dictionary<int, Player> players = new Dictionary<int, Player>();
+    public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
     void Awake()
     {

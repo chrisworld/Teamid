@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Manager
+  - AreaTeam1
+  - AreaTeam2
   layers:
   - Default
   - TransparentFX
@@ -41,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Area0
+    uniqueID: 130056031
     locked: 0
   - name: Area
     uniqueID: 3959590321

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3420449626542782241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.55, y: 0.29, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_Children:
   - {fileID: 4883952849556533227}
   m_Father: {fileID: 0}
@@ -70,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -365358813
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 754346276657a654f97c8b5f7954dd70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -98,7 +98,7 @@ MonoBehaviour:
   team: 
   icon: {fileID: 21300000, guid: 754346276657a654f97c8b5f7954dd70, type: 3}
   gameManager: {fileID: 0}
-  speed: 3
+  speed: 30
   dashDuration: 0.7
   dashMultiplier: 20
   textPoints: {fileID: 0}
@@ -139,7 +139,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.995
+  m_Radius: 19.95
 --- !u!1 &5106969148307973993
 GameObject:
   m_ObjectHideFlags: 0

@@ -194,7 +194,11 @@ public class Player : MonoBehaviour
             {
                 //Npc control
                 transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
-                if(Time.time > destinationEndtime)
+
+                float angle = Mathf.Atan2(destination.y - transform.position.y, destination.x - transform.position.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+                if (Time.time > destinationEndtime)
                 {
                     destinationEndtime = Time.time + Random.Range(minDestinationCdStat, maxDestinationCdStat);
                     GetRandomLocation();
@@ -395,7 +399,7 @@ public class Player : MonoBehaviour
             area.points--;
             area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
             this.points++;
-            textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+            //textPoints.GetComponent<Text>().text = points + " points in the backpack.";
         }
     }
     private void Deposit(GameObject areaObject)
@@ -406,7 +410,7 @@ public class Player : MonoBehaviour
             area.points++;
             area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
             this.points--;
-            textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+            //textPoints.GetComponent<Text>().text = points + " points in the backpack.";
         }
     }
     private void GetRandomTeam()

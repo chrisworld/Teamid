@@ -40,6 +40,8 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        teamAarea = GameObject.FindGameObjectWithTag("AreaTeam1");
+        teamBarea = GameObject.FindGameObjectWithTag("AreaTeam2");
         StartCoroutine("Timer");
         Time.timeScale = 1;
     }

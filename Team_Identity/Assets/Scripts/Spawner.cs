@@ -6,7 +6,8 @@ using Newtonsoft.Json.Linq;
 
 public class Spawner : MonoBehaviour
 {
-  public Transform[] spawn_positions;
+  
+  List<Transform> spawn_positions;
   public GameObject player_prefab;
   public GameObject npc_prefab;
   public float spawn_range = 20f;
@@ -18,10 +19,20 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shuffled_index = ShuffledVector(spawn_positions.Length);
+        spawn_positions = new List<Transform>();
+        PopulateSpawnList();
+        shuffled_index = ShuffledVector(spawn_positions.Count);
         spawn_index = 0;
     }
 
+    private void PopulateSpawnList()
+    {
+        GameObject[] spawners = GameObject.FindGameObjectsWithTag("SpawnPosition");
+        foreach (var obj in spawners)
+        {
+            spawn_positions.Add(obj.transform);
+        }
+    }
   
   public Player SpawnPlayer()
   {

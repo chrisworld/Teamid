@@ -7,6 +7,8 @@ TagManager:
   - Manager
   - AreaTeam1
   - AreaTeam2
+  - SpawnPosition
+
   layers:
   - Default
   - TransparentFX

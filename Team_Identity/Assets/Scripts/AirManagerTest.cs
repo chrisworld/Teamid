@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 
 public class AirManagerTest : MonoBehaviour
 {
+    public AirConsole airconsole;
     public Spawner spawner;
     public GameObject playerPrefab;
 
@@ -14,8 +15,8 @@ public class AirManagerTest : MonoBehaviour
     void Awake()
     {
         AirConsole.instance.onMessage += OnMessage;
-        AirConsole.instance.onReady += OnReady;
-        AirConsole.instance.onConnect += OnConnect;
+        //AirConsole.instance.onReady += OnReady;
+        //AirConsole.instance.onConnect += OnConnect;
     }
 
     void OnReady(string code)
@@ -32,6 +33,24 @@ public class AirManagerTest : MonoBehaviour
     void OnConnect(int device)
     {
         AddNewPlayer(device);
+    }
+
+    public List<int> GetConnectedDevices()
+    {
+        List<int> connectedDevices = airconsole.GetControllerDeviceIds();
+
+        return connectedDevices;
+    }
+
+    public void SpawnPlayers(List<int> deviceIDs)
+    {
+        if (deviceIDs != null)
+        {
+            foreach (var id in deviceIDs)
+            {
+                AddNewPlayer(id);
+            }
+        }
     }
 
     private void AddNewPlayer(int deviceID)

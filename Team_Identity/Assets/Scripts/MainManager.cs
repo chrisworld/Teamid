@@ -24,6 +24,7 @@ public class MainManager : MonoBehaviour
     public GameObject timeText;
     public Sprite[] baseSprites;
     public List<Sprite> spritelist = new List<Sprite>();
+    List<int> devicesList;
     public static string winningTeam;
     public static int winningTeamPoints;
     public static int losingTeamPoints;
@@ -70,18 +71,14 @@ public class MainManager : MonoBehaviour
             countdown.GetComponent<Text>().text = "Starting when " +startPlayerCount+ " Players are connected in " + countdownTime;
             
             if (countdownTime <= 0 && !started){
-                List<int> devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
+                FindDevices();
                 Debug.Log(devicesList.Count);
                 //if enough players in list start round
                 if (devicesList.Count >= startPlayerCount)
                 {
-                    started = true;
-                    FindObjectOfType<SoundManager>().StartBackgroundTheme();
 
-                    countdown.SetActive(false);
-                    this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
-                    
-                    
+                    StartRound();
+  
                 }else
                 {
                     //reset Countdown
@@ -92,7 +89,26 @@ public class MainManager : MonoBehaviour
         
         timeText.GetComponent<Text>().text = "Time: "+gametime;
 
+        //start game early
+        if (Input.GetKeyUp("space"))
+        {
+            FindDevices();
+            StartRound();
+        }
 
+
+    }
+    public void FindDevices()
+    {
+        devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
+    }
+    public void StartRound()
+    {
+        started = true;
+        FindObjectOfType<SoundManager>().StartBackgroundTheme();
+
+        countdown.SetActive(false);
+        this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
     }
 
     private void Endgame()

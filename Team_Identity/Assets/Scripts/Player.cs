@@ -148,14 +148,14 @@ public class Player : MonoBehaviour
                 if (movingRight)
                     direction += Vector2.right;
 
-                if (Input.GetKey("up"))
-                    direction += Vector2.up;
-                if (Input.GetKey("down"))
-                    direction += Vector2.down;
-                if (Input.GetKey("left"))
-                    direction += Vector2.left;
-                if (Input.GetKey("right"))
-                    direction += Vector2.right;
+                //if (Input.GetKey("up"))
+                //    direction += Vector2.up;
+                //if (Input.GetKey("down"))
+                //    direction += Vector2.down;
+                //if (Input.GetKey("left"))
+                //    direction += Vector2.left;
+                //if (Input.GetKey("right"))
+                //    direction += Vector2.right;
 
                 if (direction != Vector2.zero)
                 {
@@ -163,13 +163,15 @@ public class Player : MonoBehaviour
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 }
 
-                //dash attack
-                if (Input.GetKeyDown("space"))
-                    Dash();
-                if (Input.GetButtonDown("Fire2"))
-                {
-                    Defend();
-                }
+                
+
+                
+                //if (Input.GetKeyDown("Fire1"))
+                //    Dash();
+                //if (Input.GetButtonDown("Fire2"))
+                //{
+                //    Defend();
+                //}
 
                 if (isDashing)
                 {

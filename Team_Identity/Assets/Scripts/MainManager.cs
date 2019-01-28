@@ -8,15 +8,19 @@ using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    public string[] teamNames = { "TeamA", "TeamB"};
+
+    public readonly string[] teamNames = { "TeamA", "TeamB"};
+    [SerializeField]
     public int teamACount = 0;
     public int teamBCount = 0;
     public GameObject teamAarea;
     public GameObject teamBarea;
 
-    public int gametime = 0;
+    int gametime = 0;
     public int goaltime;
-    public int countdownTime = 20;
+    int countdownValue = 20;
+    int countdownTime;
+    readonly int startPlayerCount = 2;
     public GameObject timeText;
     public Sprite[] baseSprites;
     public List<Sprite> spritelist = new List<Sprite>();
@@ -47,25 +51,29 @@ public class MainManager : MonoBehaviour
     {
         teamAarea = GameObject.FindGameObjectWithTag("AreaTeam1");
         teamBarea = GameObject.FindGameObjectWithTag("AreaTeam2");
+        countdownTime = countdownValue;
+        gametime = goaltime;
         StartCoroutine("Timer");
         Time.timeScale = 1;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(gametime >= goaltime)
+        if(gametime <= 0)
         {
             Endgame();
         }
         if(!started)
         {
-            countdown.GetComponent<Text>().text = "" + countdownTime;
+            countdown.GetComponent<Text>().text = "Starting when " +startPlayerCount+ " Players are connected in " + countdownTime;
             
             if (countdownTime <= 0) {
                 List<int> devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
                 Debug.Log(devicesList.Count);
-                if (devicesList.Count >= 4)
+                //if enough players in list start round
+                if (devicesList.Count >= startPlayerCount)
                 {
                     started = true;
                     FindObjectOfType<SoundManager>().StartBackgroundTheme();
@@ -74,7 +82,12 @@ public class MainManager : MonoBehaviour
                     this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
                     
                     
-                } }
+                }else
+                {
+                    //reset Countdown
+                    countdownTime = countdownValue;
+                }
+            }
         }
         
         timeText.GetComponent<Text>().text = "Time: "+gametime;
@@ -118,9 +131,9 @@ public class MainManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            if (countdownTime <= 0)
+            if (started)
             {
-                gametime++;
+                gametime--;
             }
             if(countdownTime > 0)
             {

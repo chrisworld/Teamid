@@ -14,7 +14,7 @@ public class Area : MonoBehaviour
     void Start()
     {
         points = 10;
-        text.GetComponent<Text>().text = points + " Points in Area " + team;
+        text.GetComponent<Text>().text = points + " Points in " + team + " Area";
 
     }
 

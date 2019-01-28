@@ -19,7 +19,7 @@ public class MainManager : MonoBehaviour
     int gametime = 0;
     public int goaltime;
     int countdownValue = 20;
-    int countdownTime;
+    public int countdownTime;
     readonly int startPlayerCount = 2;
     public GameObject timeText;
     public Sprite[] baseSprites;
@@ -69,7 +69,7 @@ public class MainManager : MonoBehaviour
         {
             countdown.GetComponent<Text>().text = "Starting when " +startPlayerCount+ " Players are connected in " + countdownTime;
             
-            if (countdownTime <= 0) {
+            if (countdownTime <= 0 && !started){
                 List<int> devicesList = this.GetComponent<AirManagerTest>().GetConnectedDevices();
                 Debug.Log(devicesList.Count);
                 //if enough players in list start round

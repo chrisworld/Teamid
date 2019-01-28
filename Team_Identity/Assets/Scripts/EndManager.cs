@@ -10,6 +10,8 @@ public class EndManager : MonoBehaviour
     float restartTimer;
     public GameObject TextTimer;
     public GameObject Text;
+    readonly int countDownTimeAfterRestart = 5;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,9 @@ public class EndManager : MonoBehaviour
 
     public void RestartGame()
     {
+        MainManager gamemanager = GameObject.FindGameObjectWithTag("Manager").GetComponent<MainManager>();
+        gamemanager.started = false;
+        gamemanager.countdownTime = countDownTimeAfterRestart;
 
         SceneManager.LoadScene(0);
     }

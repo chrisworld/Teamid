@@ -17,8 +17,10 @@ public class Player : MonoBehaviour
 
     // attribute
     public float speed;
-    public float dashDuration;
+    static readonly float dashDuration = 1f;
     public float dashMultiplier;
+    static readonly float dodgeCdStat = 3f;
+    static readonly float dodgeDurationStat = 1f;
     static readonly float dashCdStat = 2f;
     static readonly float stealCdStat = 2f;
     static readonly float depositCdStat = 2f;
@@ -49,11 +51,11 @@ public class Player : MonoBehaviour
 
     private float nextDash;
 
-    float dashTimer;
+    float dashTimer = 0;
     float dashEndtime;
     float stunTimer = 3f;
     float stunEndtime;
-    float dodgeTimer = 1f;
+    float dodgeTimer = 0;
     float dodgeEndtime;
     float nextBlink;
     float blinkIntervall = 0.5f;
@@ -95,7 +97,7 @@ public class Player : MonoBehaviour
         GetRandomTeam();
 
         shield = gameObject.transform.GetChild(0).gameObject;
-        shield.GetComponent<SpriteRenderer>().enabled = false;
+        shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
         
         rb2d = GetComponent<Rigidbody2D>();
@@ -104,6 +106,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Stunstate
         if (stunned)
         {
 
@@ -129,6 +132,7 @@ public class Player : MonoBehaviour
             }
 
         }
+        //Control
         else
         {
             if (control)
@@ -164,15 +168,15 @@ public class Player : MonoBehaviour
                     Dash();
                 if (Input.GetButtonDown("Fire2"))
                 {
-                    Dodge();
+                    Defend();
                 }
 
                 if (isDashing)
                 {
-                    if (Time.time > dashEndtime)
+                    if(Time.time >= dashEndtime)
                     {
-                        isDashing = false;
                         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
+                        isDashing = false;
                     }
 
                 }
@@ -184,10 +188,10 @@ public class Player : MonoBehaviour
                 if (dodging)
                 {
                     shield.transform.Rotate(Vector3.forward, shieldRotatingSpeed * Time.deltaTime);
-                    if (Time.time > dodgeEndtime)
+                    if (Time.time >= dodgeEndtime)
                     {
                         dodging = false;
-                        shield.GetComponent<SpriteRenderer>().enabled = false;
+                        shield.GetComponent<Renderer>().enabled = false;
                     }
                 }
             }
@@ -240,7 +244,7 @@ public class Player : MonoBehaviour
 
     private void Dash()
     {
-        if (Time.time > dashTimer)
+        if (Time.time > dashTimer && !dodging &&!stunned)
         {
             FindObjectOfType<SoundManager>().dash.Play();
             transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2f, transform.localScale.z);
@@ -252,6 +256,20 @@ public class Player : MonoBehaviour
         }
 
 
+    }
+
+    private void Defend()
+    {
+        Debug.Log("Try Doding");
+        if (!isDashing && !stunned&& Time.time >=dodgeTimer)
+        {
+            Debug.Log("DODGE");
+            FindObjectOfType<SoundManager>().defend.Play();
+            shield.GetComponent<Renderer>().enabled = true;
+            dodging = true;
+            dodgeTimer = Time.time + dodgeCdStat;
+            dodgeEndtime = Time.time + dodgeDurationStat;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -348,11 +366,11 @@ public class Player : MonoBehaviour
                 }
                 break;
 
-            case "dodge":
+            case "defend":
                 if (System.Convert.ToBoolean(data["data"]["pressed"].ToString()))
                 {
-                    Debug.Log("dodge");
-                    this.Dodge();
+                    Debug.Log("defend");
+                    this.Defend();
                 }
                 break;
 
@@ -384,16 +402,7 @@ public class Player : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().mass = gameObject.GetComponent<Rigidbody2D>().mass / massReductionStun;
     }
 
-    private void Dodge()
-    {
-        if (!isDashing)
-        {
-            FindObjectOfType<SoundManager>().defend.Play();
-            shield.GetComponent<SpriteRenderer>().enabled = true;
-            dodging = true;
-            dodgeEndtime = Time.time + dodgeTimer;
-        }
-    }
+    
 
     private void Steal(GameObject areaObject)
     {

@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 310170577}
   - component: {fileID: 310170576}
   m_Layer: 0
-  m_Name: AirManager-test
+  m_Name: AirManager
   m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,7 +249,7 @@ MonoBehaviour:
   teamBCount: 0
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
-  goaltime: 100
+  goaltime: 120
   timeText: {fileID: 1993268006}
   baseSprites: []
   spritelist: []
@@ -300,12 +300,12 @@ PrefabInstance:
     - target: {fileID: 7180264973758082037, guid: a5213345f7965be4b9d76a6d1ddffc0e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7180264973758082034, guid: a5213345f7965be4b9d76a6d1ddffc0e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 178.6
+      value: -183
       objectReference: {fileID: 0}
     - target: {fileID: 7180264973758082034, guid: a5213345f7965be4b9d76a6d1ddffc0e,
         type: 3}
@@ -1107,6 +1107,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 548787977, guid: 4d752107d623bee41bba123928653c43, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 548787977, guid: 4d752107d623bee41bba123928653c43, type: 3}
+      propertyPath: m_Volume
+      value: 0.65
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d752107d623bee41bba123928653c43, type: 3}
 --- !u!1 &1118638480
@@ -1275,7 +1283,7 @@ PrefabInstance:
     - target: {fileID: 7180264973758082037, guid: a5213345f7965be4b9d76a6d1ddffc0e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7180264973758082034, guid: a5213345f7965be4b9d76a6d1ddffc0e,
         type: 3}
@@ -2196,7 +2204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 0
+  browserStartMode: 3
   controllerHtml: {fileID: 4900000, guid: 34f4163d50dc07e4d9fd967bf17e49c6, type: 3}
   autoScaleCanvas: 1
 --- !u!4 &2010484950

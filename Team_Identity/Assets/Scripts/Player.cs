@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
     float dodgeTimer = 0;
     float dodgeEndtime;
     float nextBlink;
-    float blinkIntervall = 0.5f;
+    float blinkIntervall = 0.3f;
     float stealTimer;
     float stealEndtime;
     float depositTimer;
@@ -254,6 +254,7 @@ public class Player : MonoBehaviour
             FindObjectOfType<SoundManager>().dash.Play();
             transform.localScale = new Vector3(transform.localScale.x, normalRadiusDash / 2f, transform.localScale.z);
             StartCoroutine("DashAnimation");
+
             dashTimer = Time.time + dashCdStat;
             dashEndtime = Time.time + dashDuration;
             isDashing = true;
@@ -284,10 +285,8 @@ public class Player : MonoBehaviour
 
     private void Defend()
     {
-        Debug.Log("Try Doding");
         if (!isDashing && !stunned && Time.time >= dodgeTimer)
         {
-            Debug.Log("DODGE");
             FindObjectOfType<SoundManager>().defend.Play();
             shield.GetComponent<Renderer>().enabled = true;
             dodging = true;

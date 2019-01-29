@@ -19,7 +19,7 @@ public class EndManager : MonoBehaviour
         Time.timeScale = 1;
         restartTimer = restartCd;
         Text.GetComponent<Text>().text = MainManager.winningTeam + " won the game with " + MainManager.winningTeamPoints + " : " + MainManager.losingTeamPoints;
-
+        //AirManagerTest.players.
     }
 
     // Update is called once per frame

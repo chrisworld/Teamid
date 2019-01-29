@@ -148,14 +148,14 @@ public class Player : MonoBehaviour
                 if (movingRight)
                     direction += Vector2.right;
 
-                //if (Input.GetKey("up"))
-                //    direction += Vector2.up;
-                //if (Input.GetKey("down"))
-                //    direction += Vector2.down;
-                //if (Input.GetKey("left"))
-                //    direction += Vector2.left;
-                //if (Input.GetKey("right"))
-                //    direction += Vector2.right;
+                if (Input.GetKey("up"))
+                    direction += Vector2.up;
+                if (Input.GetKey("down"))
+                    direction += Vector2.down;
+                if (Input.GetKey("left"))
+                    direction += Vector2.left;
+                if (Input.GetKey("right"))
+                    direction += Vector2.right;
 
                 if (direction != Vector2.zero)
                 {
@@ -163,23 +163,28 @@ public class Player : MonoBehaviour
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 }
 
-                
 
-                
-                //if (Input.GetKeyDown("Fire1"))
-                //    Dash();
-                //if (Input.GetButtonDown("Fire2"))
-                //{
-                //    Defend();
-                //}
+
+
+                if (Input.GetButtonDown("Fire1"))
+                    Dash();
+                if (Input.GetButtonDown("Fire2"))
+                {
+                    Defend();
+                }
 
                 if (isDashing)
                 {
-                    if(Time.time >= dashEndtime)
+                    if (Time.time >= dashEndtime - 0.5f)
+                    {
+                        rb2d.AddForce(direction * speed);
+                    }
+                    if (Time.time >= dashEndtime)
                     {
                         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
                         isDashing = false;
                     }
+                    
 
                 }
                 else
@@ -220,7 +225,7 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        if (locatedArea != null && stealing && !stunned)
+        if (locatedArea != null && stealing && !stunned &&control)
         {
             if (Time.time > stealEndtime)
             {
@@ -230,7 +235,7 @@ public class Player : MonoBehaviour
             }
 
         }
-        if (locatedArea != null && depositing && !stunned)
+        if (locatedArea != null && depositing && !stunned&&control)
         {
             if (Time.time > depositEndtime)
             {

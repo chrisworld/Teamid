@@ -22,6 +22,7 @@ public class MainManager : MonoBehaviour
     public int countdownTime;
     readonly int startPlayerCount = 2;
     public GameObject timeText;
+    GameObject spawner;
     public Sprite[] baseSprites;
     public List<Sprite> spritelist = new List<Sprite>();
     List<int> devicesList;
@@ -52,6 +53,7 @@ public class MainManager : MonoBehaviour
     {
         teamAarea = GameObject.FindGameObjectWithTag("AreaTeam1");
         teamBarea = GameObject.FindGameObjectWithTag("AreaTeam2");
+        spawner = GameObject.FindGameObjectWithTag("Spawner");
         countdownTime = countdownValue;
         gametime = goaltime;
         StartCoroutine("Timer");
@@ -109,6 +111,12 @@ public class MainManager : MonoBehaviour
 
         countdown.SetActive(false);
         this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
+
+        //npcs when 4 players or less
+        if (devicesList.Count < 5)
+        {
+            spawner.GetComponent<Spawner>().SpawnNPCs(2);
+        }
     }
 
     private void Endgame()

@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
     // attribute
     public float speed;
-    static readonly float dashDuration = 1f;
+    static readonly float dashDuration = 0.5f;
     public float dashMultiplier;
     static readonly float dodgeCdStat = 3f;
     static readonly float dodgeDurationStat = 1f;
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     private int points;
     private Vector2 direction;
     Vector2 dashDirection;
+    private float normalRadiusDash;
 
     private Rigidbody2D rb2d;
     public GameObject textPoints;
@@ -91,6 +92,8 @@ public class Player : MonoBehaviour
         righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
         GetRandomLocation();
 
+        normalRadiusDash = transform.localScale.y;
+
         gameManager = GameObject.FindGameObjectWithTag("Manager");
 
         GetRandomIcon();
@@ -99,7 +102,7 @@ public class Player : MonoBehaviour
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
-        
+
         rb2d = GetComponent<Rigidbody2D>();
         direction = new Vector2(0, 0);
     }
@@ -163,28 +166,23 @@ public class Player : MonoBehaviour
                     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 }
 
+                //for testing dash and dodge
 
-
-
-                if (Input.GetButtonDown("Fire1"))
+                if (Input.GetKeyDown("a"))
                     Dash();
-                if (Input.GetButtonDown("Fire2"))
+                if (Input.GetKeyDown("s"))
                 {
                     Defend();
                 }
 
                 if (isDashing)
                 {
-                    if (Time.time >= dashEndtime - 0.5f)
-                    {
-                        rb2d.AddForce(direction * speed);
-                    }
+
                     if (Time.time >= dashEndtime)
                     {
-                        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 2f, transform.localScale.z);
+                        transform.localScale = new Vector3(transform.localScale.x, normalRadiusDash, transform.localScale.z);
                         isDashing = false;
                     }
-                    
 
                 }
                 else
@@ -214,7 +212,7 @@ public class Player : MonoBehaviour
                 {
                     destinationEndtime = Time.time + Random.Range(minDestinationCdStat, maxDestinationCdStat);
                     GetRandomLocation();
-                    
+
                 }
 
             }
@@ -225,24 +223,24 @@ public class Player : MonoBehaviour
     void Update()
     {
 
-        if (locatedArea != null && stealing && !stunned &&control)
+        if (locatedArea != null && stealing && !stunned && control)
         {
             if (Time.time > stealEndtime)
             {
                 stealEndtime = Time.time + stealCdStat;
                 Steal(locatedArea);
-                
+
             }
 
         }
-        if (locatedArea != null && depositing && !stunned&&control)
+        if (locatedArea != null && depositing && !stunned && control)
         {
             if (Time.time > depositEndtime)
             {
                 Debug.Log("depositing");
                 depositEndtime = Time.time + depositCdStat;
                 Deposit(locatedArea);
-                
+
             }
         }
 
@@ -251,10 +249,11 @@ public class Player : MonoBehaviour
 
     private void Dash()
     {
-        if (Time.time > dashTimer && !dodging &&!stunned)
+        if (Time.time > dashTimer && !dodging && !stunned)
         {
             FindObjectOfType<SoundManager>().dash.Play();
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 2f, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, normalRadiusDash / 2f, transform.localScale.z);
+            StartCoroutine("DashAnimation");
             dashTimer = Time.time + dashCdStat;
             dashEndtime = Time.time + dashDuration;
             isDashing = true;
@@ -264,11 +263,29 @@ public class Player : MonoBehaviour
 
 
     }
+    IEnumerator DashAnimation()
+    {
+        while (true)
+        {
+            while (transform.localScale.y < normalRadiusDash)
+            {
+
+                transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 1.05f, transform.localScale.z);
+                yield return new WaitForSeconds(0.01f);
+            }
+
+            if (transform.localScale.y >= normalRadiusDash)
+            {
+
+                yield break;
+            }
+        }
+    }
 
     private void Defend()
     {
         Debug.Log("Try Doding");
-        if (!isDashing && !stunned&& Time.time >=dodgeTimer)
+        if (!isDashing && !stunned && Time.time >= dodgeTimer)
         {
             Debug.Log("DODGE");
             FindObjectOfType<SoundManager>().defend.Play();
@@ -286,13 +303,14 @@ public class Player : MonoBehaviour
         {
             stealing = true;
             stealEndtime = Time.time + stealCdStat;
-        }else if (locatedArea.GetComponent<Area>().team.Equals(team))
+        }
+        else if (locatedArea.GetComponent<Area>().team.Equals(team))
         {
             //Debug.Log("depositing");
             depositing = true;
             depositEndtime = Time.time + depositCdStat;
         }
-        
+
         Debug.Log("Entered " + locatedArea);
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -301,7 +319,7 @@ public class Player : MonoBehaviour
         locatedArea = null;
         stealing = false;
         depositing = false;
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -349,7 +367,7 @@ public class Player : MonoBehaviour
                             break;
 
                         case "left":
-                           // Debug.Log("Pressed Left on D-pad");
+                            // Debug.Log("Pressed Left on D-pad");
                             movingLeft = System.Convert.ToBoolean(data["data"]["pressed"].ToString());
                             break;
 
@@ -409,7 +427,7 @@ public class Player : MonoBehaviour
         gameObject.GetComponent<Rigidbody2D>().mass = gameObject.GetComponent<Rigidbody2D>().mass / massReductionStun;
     }
 
-    
+
 
     private void Steal(GameObject areaObject)
     {

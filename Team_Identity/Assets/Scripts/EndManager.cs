@@ -34,9 +34,8 @@ public class EndManager : MonoBehaviour
 
     public void RestartGame()
     {
-        MainManager gamemanager = GameObject.FindGameObjectWithTag("Manager").GetComponent<MainManager>();
-        gamemanager.started = false;
-        gamemanager.countdownTime = countDownTimeAfterRestart;
+        MainManager.started = false;
+        MainManager.countdownTime = countDownTimeAfterRestart;
 
         SceneManager.LoadScene(0);
     }

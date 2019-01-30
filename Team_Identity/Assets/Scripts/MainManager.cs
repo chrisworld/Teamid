@@ -19,7 +19,7 @@ public class MainManager : MonoBehaviour
     int gametime = 0;
     public int goaltime;
     int countdownValue = 20;
-    public int countdownTime;
+    public static int countdownTime;
     readonly int startPlayerCount = 2;
     public GameObject timeText;
     GameObject spawner;
@@ -31,7 +31,7 @@ public class MainManager : MonoBehaviour
     public static int losingTeamPoints;
 
     public GameObject countdown;
-    public bool started = false;
+    public static bool started = false;
 
     void Awake()
     {

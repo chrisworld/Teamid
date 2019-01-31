@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            else if (gameManager.GetComponent<MainManager>().started)
+            else if (MainManager.started)
             {
                 //Npc control
                 transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);

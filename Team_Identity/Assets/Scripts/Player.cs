@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public Sprite icon;
 
     public GameObject gameManager;
+    public GameObject player_prefab;
     Camera camera;
     Vector3 righttopForCamera;
 
@@ -78,20 +79,19 @@ public class Player : MonoBehaviour
     //normal gamespawnContructor
     public Player()
     {
+        
         GetRandomIcon();
         GetRandomTeam();
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
-        GetRandomLocation();
-
+        
     }
 
     //constructor for Endscreen
-    public Player(GameObject location, Sprite sprite, string team)
+    public Player(Transform spawn_location, Sprite sprite, string team)
     {
+        Vector2 location = new Vector2(spawn_location.position.x, spawn_location.position.y);
         icon = sprite;
         this.team = team;
-
+        Instantiate(player_prefab, location, Quaternion.Euler(0f, 0f, 0f));
     }
 
     void GetRandomLocation()
@@ -106,13 +106,19 @@ public class Player : MonoBehaviour
     void Start()
     {
         normalRadiusDash = transform.localScale.y;
-        gameManager = GameObject.FindGameObjectWithTag("Manager");
+        
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
 
         rb2d = GetComponent<Rigidbody2D>();
         direction = new Vector2(0, 0);
+        if (!control)
+        {
+            camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
+            GetRandomLocation();
+        }
     }
 
     private void FixedUpdate()
@@ -414,15 +420,15 @@ public class Player : MonoBehaviour
 
     void IconBackToList(Sprite sprite)
     {
-        gameManager.GetComponent<MainManager>().spritelist.Add(sprite);
+        MainManager.spritelist.Add(sprite);
     }
 
 
     private void GetRandomIcon()
     {
-        int rnd = Random.Range(0, gameManager.GetComponent<MainManager>().spritelist.Count);
-        gameObject.GetComponent<SpriteRenderer>().sprite = gameManager.GetComponent<MainManager>().spritelist[rnd];
-        gameManager.GetComponent<MainManager>().spritelist.RemoveAt(rnd);
+        int rnd = Random.Range(0, MainManager.spritelist.Count);
+        gameObject.GetComponent<SpriteRenderer>().sprite = MainManager.spritelist[rnd];
+        MainManager.spritelist.RemoveAt(rnd);
     }
 
     public void GetStunned()

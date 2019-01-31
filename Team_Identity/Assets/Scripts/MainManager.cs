@@ -24,7 +24,7 @@ public class MainManager : MonoBehaviour
     public GameObject timeText;
     GameObject spawner;
     public Sprite[] baseSprites;
-    public List<Sprite> spritelist = new List<Sprite>();
+    public static List<Sprite> spritelist = new List<Sprite>();
     List<int> devicesList;
     public static string winningTeam;
     public static int winningTeamPoints;
@@ -35,6 +35,7 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
+        
         object[] loadedSprites = Resources.LoadAll("PlayerSprites",typeof(Sprite));
         baseSprites = new Sprite[loadedSprites.Length];
         for (int i = 0; i < loadedSprites.Length; i++)
@@ -42,6 +43,7 @@ public class MainManager : MonoBehaviour
             baseSprites[i] = (Sprite)loadedSprites[i];
         }
 
+        spritelist.Clear();
         for (int i = 0; i < baseSprites.Length; i++)
         {
             spritelist.Add(baseSprites[i]);

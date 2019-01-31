@@ -97,7 +97,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 
   icon: {fileID: 21300000, guid: 754346276657a654f97c8b5f7954dd70, type: 3}
-  gameManager: {fileID: 0}
   player_prefab: {fileID: 0}
   speed: 40
   dashMultiplier: 30
@@ -123,7 +122,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &1817974717
 CircleCollider2D:
   m_ObjectHideFlags: 0

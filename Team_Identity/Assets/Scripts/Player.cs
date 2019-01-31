@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 
     public Sprite icon;
 
-    public GameObject gameManager;
+    GameObject gameManager;
     public GameObject player_prefab;
     Camera camera;
     Vector3 righttopForCamera;
@@ -80,8 +80,7 @@ public class Player : MonoBehaviour
     public Player()
     {
         
-        GetRandomIcon();
-        GetRandomTeam();
+        
         
     }
 
@@ -105,6 +104,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.FindGameObjectWithTag("Manager");
+        if (control)
+        {
+            GetRandomIcon();
+            GetRandomTeam();
+        }
+
         normalRadiusDash = transform.localScale.y;
         
         shield = gameObject.transform.GetChild(0).gameObject;
@@ -181,7 +187,6 @@ public class Player : MonoBehaviour
                 }
 
                 //for testing dash and dodge
-
                 if (Input.GetKeyDown("a"))
                     Dash();
                 if (Input.GetKeyDown("s"))
@@ -189,6 +194,13 @@ public class Player : MonoBehaviour
                     Defend();
                 }
 
+                //for testing animation
+                if (Input.GetKeyDown("d"))
+                {
+                    KillAnimation();
+                }
+
+                //animationlogic
                 if (isDashing)
                 {
 
@@ -260,7 +272,35 @@ public class Player : MonoBehaviour
 
     }
 
+    IEnumerator KillAnimation()
+    {
+        float animationTime = 3f;
+        float timer = 0;
+        float freq = 0.5f;
+        timer += animationTime;
 
+        while (timer >= 0)
+        {
+            timer -= freq;
+            yield return new WaitForSeconds(freq);
+            transform.localScale = new Vector3(transform.localScale.x * 1.1f, transform.localScale.y * 1.1f, transform.localScale.z);
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, gameObject.GetComponent<SpriteRenderer>().color.a - 0.1f);
+        }
+        Destroy(gameObject);
+
+    }
+
+    public static void KillAllLoser()
+    {
+        //foreach (KeyValuePair<int, Player> entry in AirManagerTest.players)
+        //{
+        //    if (!entry.Value.team.Equals(MainManager.winningTeam))
+        //    {
+                
+
+        //    }
+        //}
+    }
     private void Dash()
     {
         if (Time.time > dashTimer && !dodging && !stunned)
@@ -296,9 +336,9 @@ public class Player : MonoBehaviour
             }
         }
     }
-
     private void Defend()
     {
+        
         if (!isDashing && !stunned && Time.time >= dodgeTimer)
         {
             FindObjectOfType<SoundManager>().defend.Play();
@@ -334,7 +374,6 @@ public class Player : MonoBehaviour
         depositing = false;
 
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
@@ -356,8 +395,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
     public void PlayerInput(JToken data)
     {
 
@@ -417,20 +454,16 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-
     void IconBackToList(Sprite sprite)
     {
         MainManager.spritelist.Add(sprite);
     }
-
-
     private void GetRandomIcon()
     {
         int rnd = Random.Range(0, MainManager.spritelist.Count);
         gameObject.GetComponent<SpriteRenderer>().sprite = MainManager.spritelist[rnd];
         MainManager.spritelist.RemoveAt(rnd);
     }
-
     public void GetStunned()
     {
         //Beginn of stun
@@ -439,9 +472,6 @@ public class Player : MonoBehaviour
         stunEndtime = Time.time + stunTimer;
         gameObject.GetComponent<Rigidbody2D>().mass = gameObject.GetComponent<Rigidbody2D>().mass / massReductionStun;
     }
-
-
-
     private void Steal(GameObject areaObject)
     {
         if (points < maxPointsHolding)

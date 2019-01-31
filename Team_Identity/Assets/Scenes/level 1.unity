@@ -250,12 +250,9 @@ MonoBehaviour:
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
   goaltime: 180
-  countdownTime: 0
   timeText: {fileID: 1993268006}
   baseSprites: []
-  spritelist: []
   countdown: {fileID: 1946056750}
-  started: 0
 --- !u!114 &310170577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2008,7 +2005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 4
+  browserStartMode: 0
   controllerHtml: {fileID: 4900000, guid: 34f4163d50dc07e4d9fd967bf17e49c6, type: 3}
   autoScaleCanvas: 1
 --- !u!4 &2010484950

@@ -32,10 +32,12 @@ public class MainManager : MonoBehaviour
 
     public GameObject countdown;
     public static bool started = false;
+    public static bool endgame = false;
 
     void Awake()
     {
-        
+        started = false;
+        endgame = false;
         object[] loadedSprites = Resources.LoadAll("PlayerSprites",typeof(Sprite));
         baseSprites = new Sprite[loadedSprites.Length];
         for (int i = 0; i < loadedSprites.Length; i++)
@@ -66,7 +68,7 @@ public class MainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gametime <= 0)
+        if(gametime == 0)
         {
             Endgame();
         }
@@ -124,6 +126,7 @@ public class MainManager : MonoBehaviour
     private void Endgame()
     {
         Debug.Log("End triggered");
+
         if(teamAarea.GetComponent<Area>().points > teamBarea.GetComponent<Area>().points)
         {
             winningTeam = "Team A";
@@ -142,14 +145,51 @@ public class MainManager : MonoBehaviour
             losingTeamPoints = teamAarea.GetComponent<Area>().points;
             winningTeamPoints = teamBarea.GetComponent<Area>().points;
         }
-
-        SceneManager.LoadScene("Endgame");
+        KillLoser();
+        StartCoroutine("SwitchToEndgame");
     }
 
+    private void KillLoser()
+    {
+        foreach(GameObject ele in spawner.GetComponent<Spawner>().npc_list)
+        {
+            StartCoroutine("KillAnimation",ele);
+        }
+        foreach(GameObject ele in spawner.GetComponent<Spawner>().player_list)
+        {
+            if (!ele.GetComponent<Player>().team.Equals(winningTeam)){
+                StartCoroutine("KillAnimation", ele);
+            }
+        }
+        
+    }
+
+    IEnumerator KillAnimation(GameObject victim)
+    {
+        float animationTime = 2f;
+        float timer = 0;
+        float freq = 0.5f;
+        timer += animationTime;
+
+        while (timer >= 0)
+        {
+            timer -= freq;
+            yield return new WaitForSeconds(freq);
+            Transform v_transform = victim.transform;
+            SpriteRenderer v_renderer = victim.GetComponent<SpriteRenderer>();
+            v_transform.localScale = new Vector3(v_transform.localScale.x * 1.05f, v_transform.localScale.y * 1.05f, v_transform.localScale.z);
+            v_renderer.color = new Color(1f, 1f, 1f, v_renderer.color.a - 0.05f);
+        }
+        victim.gameObject.SetActive(false);
+        
 
 
-
-
+    }
+    IEnumerator SwitchToEndgame()
+    {
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene("Endgame");
+    }
 
 
     IEnumerator Timer()
@@ -157,7 +197,7 @@ public class MainManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1);
-            if (started)
+            if (started && gametime >0)
             {
                 gametime--;
             }

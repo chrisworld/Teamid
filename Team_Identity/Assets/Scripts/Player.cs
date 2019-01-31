@@ -75,7 +75,24 @@ public class Player : MonoBehaviour
     public static float maxDestinationCdStat = 5f;
     public static float minDestinationCdStat = 2f;
 
+    //normal gamespawnContructor
+    public Player()
+    {
+        GetRandomIcon();
+        GetRandomTeam();
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
+        GetRandomLocation();
 
+    }
+
+    //constructor for Endscreen
+    public Player(GameObject location, Sprite sprite, string team)
+    {
+        icon = sprite;
+        this.team = team;
+
+    }
 
     void GetRandomLocation()
     {
@@ -88,17 +105,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
-        GetRandomLocation();
-
         normalRadiusDash = transform.localScale.y;
-
         gameManager = GameObject.FindGameObjectWithTag("Manager");
-
-        GetRandomIcon();
-        GetRandomTeam();
-
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
@@ -200,7 +208,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            else if (gameManager.GetComponent<MainManager>().started)
+            else if (MainManager.started)
             {
                 //Npc control
                 transform.position = Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);

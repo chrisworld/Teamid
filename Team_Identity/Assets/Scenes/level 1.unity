@@ -249,7 +249,7 @@ MonoBehaviour:
   teamBCount: 0
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
-  goaltime: 180
+  goaltime: 10
   timeText: {fileID: 1993268006}
   baseSprites: []
   countdown: {fileID: 1946056750}

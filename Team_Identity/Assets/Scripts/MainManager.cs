@@ -18,7 +18,7 @@ public class MainManager : MonoBehaviour
 
     int gametime = 0;
     public int goaltime;
-    int countdownValue = 20;
+    int countdownValue = 60;
     public static int countdownTime;
     readonly int startPlayerCount = 2;
     public GameObject timeText;

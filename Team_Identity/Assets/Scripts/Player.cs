@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
 
     public Sprite icon;
 
-    public GameObject gameManager;
+    GameObject gameManager;
+    public GameObject player_prefab;
     Camera camera;
     Vector3 righttopForCamera;
 
@@ -75,7 +76,22 @@ public class Player : MonoBehaviour
     public static float maxDestinationCdStat = 5f;
     public static float minDestinationCdStat = 2f;
 
+    //normal gamespawnContructor
+    public Player()
+    {
+        
+        
+        
+    }
 
+    //constructor for Endscreen
+    public Player(Transform spawn_location, Sprite sprite, string team)
+    {
+        Vector2 location = new Vector2(spawn_location.position.x, spawn_location.position.y);
+        icon = sprite;
+        this.team = team;
+        Instantiate(player_prefab, location, Quaternion.Euler(0f, 0f, 0f));
+    }
 
     void GetRandomLocation()
     {
@@ -88,23 +104,27 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
-        GetRandomLocation();
+        gameManager = GameObject.FindGameObjectWithTag("Manager");
+        if (control)
+        {
+            GetRandomIcon();
+            GetRandomTeam();
+        }
 
         normalRadiusDash = transform.localScale.y;
-
-        gameManager = GameObject.FindGameObjectWithTag("Manager");
-
-        GetRandomIcon();
-        GetRandomTeam();
-
+        
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
 
         rb2d = GetComponent<Rigidbody2D>();
         direction = new Vector2(0, 0);
+        if (!control)
+        {
+            camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            righttopForCamera = camera.ViewportToWorldPoint(new Vector3(0.8f, 0.8f, 0));
+            GetRandomLocation();
+        }
     }
 
     private void FixedUpdate()
@@ -167,7 +187,6 @@ public class Player : MonoBehaviour
                 }
 
                 //for testing dash and dodge
-
                 if (Input.GetKeyDown("a"))
                     Dash();
                 if (Input.GetKeyDown("s"))
@@ -175,6 +194,13 @@ public class Player : MonoBehaviour
                     Defend();
                 }
 
+                //for testing animation
+                if (Input.GetKeyDown("d"))
+                {
+                    KillAnimation();
+                }
+
+                //animationlogic
                 if (isDashing)
                 {
 
@@ -246,7 +272,35 @@ public class Player : MonoBehaviour
 
     }
 
+    IEnumerator KillAnimation()
+    {
+        float animationTime = 3f;
+        float timer = 0;
+        float freq = 0.5f;
+        timer += animationTime;
 
+        while (timer >= 0)
+        {
+            timer -= freq;
+            yield return new WaitForSeconds(freq);
+            transform.localScale = new Vector3(transform.localScale.x * 1.1f, transform.localScale.y * 1.1f, transform.localScale.z);
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, gameObject.GetComponent<SpriteRenderer>().color.a - 0.1f);
+        }
+        Destroy(gameObject);
+
+    }
+
+    public static void KillAllLoser()
+    {
+        //foreach (KeyValuePair<int, Player> entry in AirManagerTest.players)
+        //{
+        //    if (!entry.Value.team.Equals(MainManager.winningTeam))
+        //    {
+                
+
+        //    }
+        //}
+    }
     private void Dash()
     {
         if (Time.time > dashTimer && !dodging && !stunned)
@@ -282,9 +336,9 @@ public class Player : MonoBehaviour
             }
         }
     }
-
     private void Defend()
     {
+        
         if (!isDashing && !stunned && Time.time >= dodgeTimer)
         {
             FindObjectOfType<SoundManager>().defend.Play();
@@ -320,7 +374,6 @@ public class Player : MonoBehaviour
         depositing = false;
 
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
@@ -342,8 +395,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
     public void PlayerInput(JToken data)
     {
 
@@ -403,20 +454,16 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-
     void IconBackToList(Sprite sprite)
     {
-        gameManager.GetComponent<MainManager>().spritelist.Add(sprite);
+        MainManager.spritelist.Add(sprite);
     }
-
-
     private void GetRandomIcon()
     {
-        int rnd = Random.Range(0, gameManager.GetComponent<MainManager>().spritelist.Count);
-        gameObject.GetComponent<SpriteRenderer>().sprite = gameManager.GetComponent<MainManager>().spritelist[rnd];
-        gameManager.GetComponent<MainManager>().spritelist.RemoveAt(rnd);
+        int rnd = Random.Range(0, MainManager.spritelist.Count);
+        gameObject.GetComponent<SpriteRenderer>().sprite = MainManager.spritelist[rnd];
+        MainManager.spritelist.RemoveAt(rnd);
     }
-
     public void GetStunned()
     {
         //Beginn of stun
@@ -425,9 +472,6 @@ public class Player : MonoBehaviour
         stunEndtime = Time.time + stunTimer;
         gameObject.GetComponent<Rigidbody2D>().mass = gameObject.GetComponent<Rigidbody2D>().mass / massReductionStun;
     }
-
-
-
     private void Steal(GameObject areaObject)
     {
         if (points < maxPointsHolding)

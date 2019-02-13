@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
   public float spawn_range = 20f;
 
   private int spawn_index;
-  private List<Player> player_list = new List<Player>();
+    public List<GameObject> player_list = new List<GameObject>();
+    public List<GameObject> npc_list = new List<GameObject>();
   private int[] shuffled_index;
 
     // Start is called before the first frame update
@@ -41,6 +42,7 @@ public class Spawner : MonoBehaviour
     Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
     Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
     GameObject player = (GameObject)Instantiate (player_prefab, spawnPosition, spawnRotation);
+    player_list.Add(player);
     return player.GetComponent<Player>();
   }
 
@@ -55,15 +57,9 @@ public class Spawner : MonoBehaviour
       Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
       Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
       npc_index += 1;
-      GameObject npcs = (GameObject)Instantiate (npc_prefab, spawnPosition, spawnRotation);
+      GameObject npc = (GameObject)Instantiate (npc_prefab, spawnPosition, spawnRotation);
+      npc_list.Add(npc);
     }
-  }
-
-  // Add Spawnable Player to game
-  public void AddPlayerToGame(Player player)
-  {
-    player_list.Add(player);
-    Debug.Log("Add player to next game: " + player);
   }
 
   // create shuffled vector for spawning

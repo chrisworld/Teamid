@@ -9,6 +9,7 @@ TagManager:
   - AreaTeam2
   - SpawnPosition
   - Spawner
+  - Airconsole
   layers:
   - Default
   - TransparentFX

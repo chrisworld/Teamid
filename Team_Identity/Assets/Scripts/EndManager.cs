@@ -11,6 +11,7 @@ public class EndManager : MonoBehaviour
     public GameObject TextTimer;
     public GameObject Text;
     readonly int countDownTimeAfterRestart = 5;
+    public GameObject PlayerPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,7 @@ public class EndManager : MonoBehaviour
         Time.timeScale = 1;
         restartTimer = restartCd;
         Text.GetComponent<Text>().text = MainManager.winningTeam + " won the game with " + MainManager.winningTeamPoints + " : " + MainManager.losingTeamPoints;
-        //AirManagerTest.players.
+        
     }
 
     // Update is called once per frame

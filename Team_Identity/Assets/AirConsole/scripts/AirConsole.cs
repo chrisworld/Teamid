@@ -10,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
 namespace NDream.AirConsole {
+    
+
 	public enum StartMode {
 		VirtualControllers,
 		Debug,
@@ -1030,14 +1032,17 @@ namespace NDream.AirConsole {
 			while (eventQueue.Count > 0) {
 				eventQueue.Dequeue ().Invoke ();
 			}
+            //testdebugging
+                Debug.Log(IsAirConsoleUnityPluginReady());
+            
 
-		#if UNITY_ANDROID
+#if UNITY_ANDROID
 			//back button on TV remotes
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				Application.Quit(); 
 			}
-		#endif
-		}
+#endif
+        }
 
 		void OnApplicationQuit () {
 			StopWebsocketServer ();

@@ -14,6 +14,7 @@ public class AirManagerTest : MonoBehaviour
 
     void Awake()
     {
+        airconsole = GameObject.FindGameObjectWithTag("Airconsole").GetComponent<AirConsole>();
         AirConsole.instance.onMessage += OnMessage;
         //AirConsole.instance.onReady += OnReady;
         //AirConsole.instance.onConnect += OnConnect;

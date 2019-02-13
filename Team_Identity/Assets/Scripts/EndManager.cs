@@ -37,6 +37,7 @@ public class EndManager : MonoBehaviour
     {
         MainManager.started = false;
         MainManager.countdownTime = countDownTimeAfterRestart;
+        AirManagerTest.players.Clear();
 
         SceneManager.LoadScene(0);
     }

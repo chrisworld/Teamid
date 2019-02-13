@@ -1032,8 +1032,7 @@ namespace NDream.AirConsole {
 			while (eventQueue.Count > 0) {
 				eventQueue.Dequeue ().Invoke ();
 			}
-            //testdebugging
-                Debug.Log(IsAirConsoleUnityPluginReady());
+            
             
 
 #if UNITY_ANDROID

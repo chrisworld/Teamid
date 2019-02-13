@@ -49,6 +49,7 @@ public class AirManagerTest : MonoBehaviour
         {
             foreach (var id in deviceIDs)
             {
+                
                 AddNewPlayer(id);
             }
         }
@@ -59,6 +60,7 @@ public class AirManagerTest : MonoBehaviour
 
         if (players.ContainsKey(deviceID))
         {
+            Debug.Log("i return");
             return;
         }
 

@@ -33,11 +33,13 @@ public class MainManager : MonoBehaviour
     public GameObject countdown;
     public static bool started = false;
     public static bool endgame = false;
+    public static bool endtriggered = false;
 
     void Awake()
     {
         started = false;
         endgame = false;
+        endtriggered = false;
         object[] loadedSprites = Resources.LoadAll("PlayerSprites",typeof(Sprite));
         baseSprites = new Sprite[loadedSprites.Length];
         for (int i = 0; i < loadedSprites.Length; i++)
@@ -68,7 +70,7 @@ public class MainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gametime == 0)
+        if(gametime == 0 && !endtriggered)
         {
             Endgame();
         }
@@ -101,6 +103,11 @@ public class MainManager : MonoBehaviour
             FindDevices();
             StartRound();
         }
+        //endgame early
+        if (Input.GetKeyUp("escape"))
+        {
+            gametime = 0;
+        }
 
 
     }
@@ -114,6 +121,7 @@ public class MainManager : MonoBehaviour
         FindObjectOfType<SoundManager>().StartBackgroundTheme();
 
         countdown.SetActive(false);
+        Debug.Log(devicesList.Count);
         this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
 
         //npcs when 4 players or less
@@ -126,8 +134,9 @@ public class MainManager : MonoBehaviour
     private void Endgame()
     {
         Debug.Log("End triggered");
-
-        if(teamAarea.GetComponent<Area>().points > teamBarea.GetComponent<Area>().points)
+        endtriggered = true;
+        FindObjectOfType<SoundManager>().StopBackgroundTheme();
+        if (teamAarea.GetComponent<Area>().points > teamBarea.GetComponent<Area>().points)
         {
             winningTeam = "Team A";
             winningTeamPoints = teamAarea.GetComponent<Area>().points;

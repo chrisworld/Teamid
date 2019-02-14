@@ -98,8 +98,8 @@ MonoBehaviour:
   team: 
   icon: {fileID: 21300000, guid: 754346276657a654f97c8b5f7954dd70, type: 3}
   player_prefab: {fileID: 0}
-  speed: 40
-  dashMultiplier: 30
+  speed: 60
+  dashMultiplier: 10
   textPoints: {fileID: 0}
   control: 1
 --- !u!50 &3420449626542782245

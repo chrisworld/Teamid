@@ -177,8 +177,9 @@ public class MainManager : MonoBehaviour
     {
         float animationTime = 2f;
         float timer = 0;
-        float freq = 0.5f;
+        float freq = 0.01f;
         timer += animationTime;
+        victim.GetComponent<CircleCollider2D>().enabled = false;
 
         while (timer >= 0)
         {

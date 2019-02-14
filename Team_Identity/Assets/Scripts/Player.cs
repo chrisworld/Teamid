@@ -214,7 +214,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     //move
-                    rb2d.AddForce(direction * speed);
+                    rb2d.velocity = direction * speed;
                 }
                 if (dodging)
                 {
@@ -276,7 +276,7 @@ public class Player : MonoBehaviour
     {
         float animationTime = 3f;
         float timer = 0;
-        float freq = 0.5f;
+        float freq = 0.3f;
         timer += animationTime;
 
         while (timer >= 0)
@@ -313,7 +313,7 @@ public class Player : MonoBehaviour
             dashEndtime = Time.time + dashDuration;
             isDashing = true;
             dashDirection = direction;
-            rb2d.AddForce(dashDirection * speed * dashMultiplier);
+            rb2d.velocity = dashDirection * speed * dashMultiplier;
         }
 
 

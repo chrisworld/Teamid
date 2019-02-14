@@ -272,35 +272,7 @@ public class Player : MonoBehaviour
 
     }
 
-    IEnumerator KillAnimation()
-    {
-        float animationTime = 3f;
-        float timer = 0;
-        float freq = 0.3f;
-        timer += animationTime;
-
-        while (timer >= 0)
-        {
-            timer -= freq;
-            yield return new WaitForSeconds(freq);
-            transform.localScale = new Vector3(transform.localScale.x * 1.1f, transform.localScale.y * 1.1f, transform.localScale.z);
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, gameObject.GetComponent<SpriteRenderer>().color.a - 0.1f);
-        }
-        Destroy(gameObject);
-
-    }
-
-    public static void KillAllLoser()
-    {
-        //foreach (KeyValuePair<int, Player> entry in AirManagerTest.players)
-        //{
-        //    if (!entry.Value.team.Equals(MainManager.winningTeam))
-        //    {
-                
-
-        //    }
-        //}
-    }
+    
     private void Dash()
     {
         if (Time.time > dashTimer && !dodging && !stunned)

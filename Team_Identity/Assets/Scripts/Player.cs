@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using NDream.AirConsole;
 
 public class Player : MonoBehaviour
 {
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour
     float massReductionStun = 6f;
     float shieldRotatingSpeed = 30f;
     int maxPointsHolding = 3;
+    int deviceID;
 
     //Npc values
     Vector2 destination;
@@ -76,31 +78,8 @@ public class Player : MonoBehaviour
     public static float maxDestinationCdStat = 5f;
     public static float minDestinationCdStat = 2f;
 
-    //normal gamespawnContructor
-    public Player()
-    {
-        
-        
-        
-    }
 
-    //constructor for Endscreen
-    public Player(Transform spawn_location, Sprite sprite, string team)
-    {
-        Vector2 location = new Vector2(spawn_location.position.x, spawn_location.position.y);
-        icon = sprite;
-        this.team = team;
-        Instantiate(player_prefab, location, Quaternion.Euler(0f, 0f, 0f));
-    }
-
-    void GetRandomLocation()
-    {
-        destination = new Vector2(
-            Random.Range(-righttopForCamera.x, righttopForCamera.x),
-            Random.Range(-righttopForCamera.y, righttopForCamera.y)
-            );
-
-    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -461,6 +440,11 @@ public class Player : MonoBehaviour
             //textPoints.GetComponent<Text>().text = points + " points in the backpack.";
         }
     }
+    public void SetDeviceID(int deviceID)
+    {
+        this.deviceID = deviceID;
+    }
+
     private void GetRandomTeam()
     {
         if (gameManager.GetComponent<MainManager>().teamACount == gameManager.GetComponent<MainManager>().teamBCount)
@@ -490,4 +474,15 @@ public class Player : MonoBehaviour
         }
 
     }
+
+    void GetRandomLocation()
+    {
+        destination = new Vector2(
+            Random.Range(-righttopForCamera.x, righttopForCamera.x),
+            Random.Range(-righttopForCamera.y, righttopForCamera.y)
+            );
+
+    }
+
+
 }

@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class MainManager : MonoBehaviour
 {
 
-    public readonly string[] teamNames = { "TeamA", "TeamB"};
+    public readonly string[] teamNames = { "Team Left", "Team Right"};
     [SerializeField]
     public int teamACount = 0;
     public int teamBCount = 0;

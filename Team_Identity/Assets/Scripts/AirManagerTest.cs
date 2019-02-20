@@ -52,6 +52,10 @@ public class AirManagerTest : MonoBehaviour
                 
                 AddNewPlayer(id);
             }
+            foreach(var id in spawner.player_list)
+            {
+
+            }
         }
     }
 
@@ -68,11 +72,18 @@ public class AirManagerTest : MonoBehaviour
         //GameObject newPlayer = Instantiate(playerPrefab, transform.position, transform.rotation) as GameObject;
         Player newPlayer = spawner.SpawnPlayer();
         players.Add(deviceID, newPlayer);
+        SendTeamMessageToController(deviceID,"huh");
+        Debug.Log("Send message: " + newPlayer.team + " to DeviceID: " + deviceID);
     }
+    public void SendTeamMessageToController(int ControllerID,string team)
+    {
+        AirConsole.instance.Message(ControllerID, team);
+    }
+
 
     void OnMessage(int from, JToken data)
     {
-       // Debug.Log("message: " + data);
+       Debug.Log("message: " + data);
 
         //When I get a message, I check if it's from any of the devices stored in my device Id dictionary
         if (players.ContainsKey(from) && data["element"] != null)

@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NDream.AirConsole;
-using Newtonsoft.Json.Linq;
+
 
 public class Spawner : MonoBehaviour
 {
@@ -16,6 +15,8 @@ public class Spawner : MonoBehaviour
     public List<GameObject> player_list = new List<GameObject>();
     public List<GameObject> npc_list = new List<GameObject>();
   private int[] shuffled_index;
+
+    
 
     // Start is called before the first frame update
     void Start()

@@ -194,11 +194,6 @@ public class Player : MonoBehaviour
                     Defend();
                 }
 
-                //for testing animation
-                if (Input.GetKeyDown("d"))
-                {
-                    KillAnimation();
-                }
 
                 //animationlogic
                 if (isDashing)

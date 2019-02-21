@@ -8,11 +8,11 @@ using NDream.AirConsole;
 public class Player : MonoBehaviour
 {
     //sources
-    public string team;
+    public string team = "Team Start";
 
     public Sprite icon;
 
-    GameObject gameManager;
+    public GameObject gameManager;
     public GameObject player_prefab;
     Camera camera;
     Vector3 righttopForCamera;
@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
         {
             GetRandomIcon();
             GetRandomTeam();
+            SendTeamMessageToController(deviceID,team);
         }
 
         normalRadiusDash = transform.localScale.y;
@@ -426,7 +427,7 @@ public class Player : MonoBehaviour
             area.points--;
             area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
             this.points++;
-            //textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+            SendPointMessageToController(this.deviceID, points);
         }
     }
     private void Deposit(GameObject areaObject)
@@ -437,7 +438,7 @@ public class Player : MonoBehaviour
             area.points++;
             area.text.GetComponent<Text>().text = area.points + " Points in Area " + area.team;
             this.points--;
-            //textPoints.GetComponent<Text>().text = points + " points in the backpack.";
+            SendPointMessageToController(this.deviceID, points);
         }
     }
     public void SetDeviceID(int deviceID)
@@ -445,32 +446,32 @@ public class Player : MonoBehaviour
         this.deviceID = deviceID;
     }
 
-    private void GetRandomTeam()
+    public void GetRandomTeam()
     {
-        if (gameManager.GetComponent<MainManager>().teamACount == gameManager.GetComponent<MainManager>().teamBCount)
+        if (MainManager.teamACount == MainManager.teamBCount)
         {
             int rnd = UnityEngine.Random.Range(0, 2);
-            team = gameManager.GetComponent<MainManager>().teamNames[rnd];
+            team = MainManager.teamNames[rnd];
             if (rnd == 0)
             {
-                gameManager.GetComponent<MainManager>().teamACount++;
+                MainManager.teamACount++;
             }
             else if (rnd == 1)
             {
-                gameManager.GetComponent<MainManager>().teamBCount++;
+                MainManager.teamBCount++;
             }
         }
         else
-        if (gameManager.GetComponent<MainManager>().teamACount > gameManager.GetComponent<MainManager>().teamBCount)
+        if (MainManager.teamACount > MainManager.teamBCount)
         {
-            team = gameManager.GetComponent<MainManager>().teamNames[1];
-            gameManager.GetComponent<MainManager>().teamBCount++;
+            team = MainManager.teamNames[1];
+            MainManager.teamBCount++;
         }
         else
-        if (gameManager.GetComponent<MainManager>().teamACount < gameManager.GetComponent<MainManager>().teamBCount)
+        if (MainManager.teamACount < MainManager.teamBCount)
         {
-            team = gameManager.GetComponent<MainManager>().teamNames[0];
-            gameManager.GetComponent<MainManager>().teamACount++;
+            team = MainManager.teamNames[0];
+            MainManager.teamACount++;
         }
 
     }
@@ -482,6 +483,17 @@ public class Player : MonoBehaviour
             Random.Range(-righttopForCamera.y, righttopForCamera.y)
             );
 
+    }
+
+    public void SendTeamMessageToController(int ControllerID, string team)
+    {
+        AirConsole.instance.Message(ControllerID, team);
+    }
+
+    public void SendPointMessageToController(int ControllerID,int points)
+    {
+        Debug.Log("Send message: " + points + " to DeviceID: " + ControllerID);
+        AirConsole.instance.Message(ControllerID, points);
     }
 
 

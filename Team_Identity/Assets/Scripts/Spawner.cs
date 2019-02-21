@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class Spawner : MonoBehaviour
 {
-  
-  List<Transform> spawn_positions;
-  public GameObject player_prefab;
-  public GameObject npc_prefab;
-  public float spawn_range = 20f;
 
-  private int spawn_index;
+    List<Transform> spawn_positions;
+    public GameObject player_prefab;
+    public GameObject npc_prefab;
+    public float spawn_range = 20f;
+
+    private int spawn_index;
     public List<GameObject> player_list = new List<GameObject>();
     public List<GameObject> npc_list = new List<GameObject>();
-  private int[] shuffled_index;
+    private int[] shuffled_index;
 
-    
+    private void Awake()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -35,52 +39,59 @@ public class Spawner : MonoBehaviour
             spawn_positions.Add(obj.transform);
         }
     }
-  
-  public Player SpawnPlayer()
-  {
-    Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
-    spawn_index += 1;
-    Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
-    Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
-    GameObject player = (GameObject)Instantiate (player_prefab, spawnPosition, spawnRotation);
-    player_list.Add(player);
-    return player.GetComponent<Player>();
-  }
 
-  // Spawn NPC
-  public void SpawnNPCs(int n_npc)
-  {
-    int npc_index = 0;
-    for (int index = 0; index < n_npc; index += 1) 
+    public GameObject SpawnPlayer(int deviceID)
     {
-      Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
-      spawn_index += 1;
-      Vector2 spawnPosition = new Vector2 (spawn_pos.position.x, spawn_pos.position.y);
-      Quaternion spawnRotation = Quaternion.Euler (0f, 0f, 0f);
-      npc_index += 1;
-      GameObject npc = (GameObject)Instantiate (npc_prefab, spawnPosition, spawnRotation);
-      npc_list.Add(npc);
-    }
-  }
-
-  // create shuffled vector for spawning
-  
-  public int[] ShuffledVector(int vec_len) {
-
-    // create vector
-    int[] sh_vec = new int[vec_len];
-    for (int i = 0; i < vec_len; i++){
-      sh_vec[i] = i;
-    } 
-
-    // shuffle
-    for (int i = 0; i < vec_len; i++){
-      int rnd = Random.Range(0, vec_len);
-      int temp = sh_vec[rnd];
-      sh_vec[rnd] = sh_vec[i];
-      sh_vec[i] = temp;
+        Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
+        spawn_index += 1;
+        Vector2 spawnPosition = new Vector2(spawn_pos.position.x, spawn_pos.position.y);
+        Quaternion spawnRotation = Quaternion.Euler(0f, 0f, 0f);
+        GameObject player = (GameObject)Instantiate(player_prefab, spawnPosition, spawnRotation);
+        player.GetComponent<Player>().SetDeviceID(deviceID);
+        
+        player_list.Add(player);
+        return player;
     }
 
-    return sh_vec;
-  }
+    // Spawn NPC
+    public void SpawnNPCs(int n_npc)
+    {
+        int npc_index = 0;
+        for (int index = 0; index < n_npc; index += 1)
+        {
+            Transform spawn_pos = spawn_positions[shuffled_index[spawn_index]];
+            spawn_index += 1;
+            Vector2 spawnPosition = new Vector2(spawn_pos.position.x, spawn_pos.position.y);
+            Quaternion spawnRotation = Quaternion.Euler(0f, 0f, 0f);
+            npc_index += 1;
+            GameObject npc = (GameObject)Instantiate(npc_prefab, spawnPosition, spawnRotation);
+            npc_list.Add(npc);
+        }
+    }
+
+    // create shuffled vector for spawning
+
+    public int[] ShuffledVector(int vec_len)
+    {
+
+        // create vector
+        int[] sh_vec = new int[vec_len];
+        for (int i = 0; i < vec_len; i++)
+        {
+            sh_vec[i] = i;
+        }
+
+        // shuffle
+        for (int i = 0; i < vec_len; i++)
+        {
+            int rnd = Random.Range(0, vec_len);
+            int temp = sh_vec[rnd];
+            sh_vec[rnd] = sh_vec[i];
+            sh_vec[i] = temp;
+        }
+
+        return sh_vec;
+    }
+
+    
 }

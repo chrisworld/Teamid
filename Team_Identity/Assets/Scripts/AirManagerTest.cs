@@ -14,7 +14,6 @@ public class AirManagerTest : MonoBehaviour
 
     void Awake()
     {
-        airconsole = GameObject.FindGameObjectWithTag("Airconsole").GetComponent<AirConsole>();
         AirConsole.instance.onMessage += OnMessage;
         //AirConsole.instance.onReady += OnReady;
         //AirConsole.instance.onConnect += OnConnect;
@@ -52,10 +51,7 @@ public class AirManagerTest : MonoBehaviour
                 
                 AddNewPlayer(id);
             }
-            foreach(var id in spawner.player_list)
-            {
-
-            }
+            
         }
     }
 
@@ -70,15 +66,13 @@ public class AirManagerTest : MonoBehaviour
 
         //Instantiate player prefab, store device id + player script in a dictionary
         //GameObject newPlayer = Instantiate(playerPrefab, transform.position, transform.rotation) as GameObject;
-        Player newPlayer = spawner.SpawnPlayer();
-        players.Add(deviceID, newPlayer);
-        SendTeamMessageToController(deviceID,"huh");
-        Debug.Log("Send message: " + newPlayer.team + " to DeviceID: " + deviceID);
+        GameObject newPlayer = spawner.SpawnPlayer(deviceID);
+        newPlayer.GetComponent<Player>().GetRandomTeam();
+        players.Add(deviceID, newPlayer.GetComponent<Player>());
+        
+
     }
-    public void SendTeamMessageToController(int ControllerID,string team)
-    {
-        AirConsole.instance.Message(ControllerID, team);
-    }
+    
 
 
     void OnMessage(int from, JToken data)

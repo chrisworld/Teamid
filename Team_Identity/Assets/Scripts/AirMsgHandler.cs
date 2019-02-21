@@ -21,7 +21,7 @@ public class AirMsgHandler : MonoBehaviour
     }
 
     if (data["action"] != null && data["action"].ToString().Equals("spawn") ){
-      spawner.SpawnPlayer();
+     // spawner.SpawnPlayer();
     }
   }
 }

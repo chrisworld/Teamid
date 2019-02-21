@@ -6,11 +6,13 @@
   <title>AirConsole Controller</title>
   <link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
   <!-- AirConsole-Controls -->
+  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-latest.js"></script>
   <link rel="stylesheet" type="text/css" href="airconsole-controls/button/button.css">
   <link rel="stylesheet" type="text/css" href="airconsole-controls/dpad/dpad.css">
   <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="controller/styles/styles.css">
   <link rel="stylesheet" type="text/css" href="controller/styles/controls.css">
+
   <style type=text/css> 
   #team{
   position:relative;
@@ -19,11 +21,19 @@
   color:white;
   top:10%;
   }
+  #points{
+  position:relative;
+  text-align:center;
+  font-size:150%;
+  color:white;
+  top:12%;
+  }
   </style>
 </head>
 <body>
 
-<div id="team">Team Test<!--Incoming messages get displayed in this container--></div>
+<div id="team"><!--Incoming messages get displayed in this container--></div>
+<div id="points">You have 0 points in the bag</div>
   <div id="controller-container">
 
     <!-- REPLACE_HERE START -->
@@ -57,12 +67,23 @@
 <script type="text/javascript">
   var ctrl_data = '{"orientation":"landscape","selected_view_id":"view-0","views":[{"id":"view-0","sections":[{"id":"view-0-section-3","elements":[{"id":"dpad","key":"dpad_absolute","name":"DPad Absolute","tmpl":"dpad","constructor_fn":"DPadAbsoluteElement","options":{"constructor_args":{"diagonal":true},"attr_id":"view-0-section-3-element-0","css_classes":"","view_action":{"target":null,"view_id":null}}}],"classes":[]},{"id":"view-0-section-4","elements":[],"classes":[]},{"id":"view-0-section-5","elements":[{"id":"dash","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-5-element-0","css_classes":"button-300-150","view_action":{"target":null,"view_id":null},"label":"Dash","send_onrelease":false,"message_data":[]}},{"id":"defend","key":"button","name":"Button","tmpl":"button","constructor_fn":"ButtonElement","options":{"constructor_args":{},"attr_id":"view-0-section-5-element-1","css_classes":"button-300-150","view_action":{"target":null,"view_id":null},"label":"Defend","send_onrelease":false,"message_data":[]}}],"classes":[]}]}]}';
 
-  this.ctrl_data.onMessage= function(from, data) {
-        console.log("onMessage", from, data);
-        document.getElementById("team").innerHTML = data;
-      };
 </script>
 
+<script type="text/javascript">
+    var airconsole = new AirConsole();
+    var vm = null;
+
+	airconsole.onMessage= function(from, data) {
+	if(data === "Team Left"|| data === "Team Right"){
+        console.log("onMessage", from, data);
+        document.getElementById("team").innerHTML = ""+data;
+		}
+		else{
+			document.getElementById("points").innerHTML = "You have "+data+" points in the bag"
+		}
+      };
+     
+    </script>
 
     <!-- REPLACE_HERE END -->
 
@@ -72,7 +93,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script type="text/javascript" src="controller/libs/handlebars-v4.0.5.js"></script>
   <!-- AIRCONSOLE -->
-  <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-latest.js"></script>
+  
   <script type="text/javascript" src="controller/libs/airconsole_view_manager.js"></script>
   <!-- AIRCONSOLE CONTROLS -->
   <script type="text/javascript" src="airconsole-controls/button/button.js"></script>

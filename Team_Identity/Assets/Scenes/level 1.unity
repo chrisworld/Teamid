@@ -245,8 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c346a1843a95e448cb3ee0a8608e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamACount: 0
-  teamBCount: 0
   teamAarea: {fileID: 0}
   teamBarea: {fileID: 0}
   goaltime: 180

@@ -9,10 +9,10 @@ using UnityEngine.SceneManagement;
 public class MainManager : MonoBehaviour
 {
 
-    public readonly string[] teamNames = { "Team Left", "Team Right"};
+    public static readonly string[] teamNames = { "Team Left", "Team Right"};
     [SerializeField]
-    public int teamACount = 0;
-    public int teamBCount = 0;
+    public static int teamACount = 0;
+    public static int teamBCount = 0;
     public GameObject teamAarea;
     public GameObject teamBarea;
 
@@ -34,6 +34,7 @@ public class MainManager : MonoBehaviour
     public static bool started = false;
     public static bool endgame = false;
     public static bool endtriggered = false;
+    public static bool spawnNPC = false;
 
     void Awake()
     {
@@ -125,7 +126,7 @@ public class MainManager : MonoBehaviour
         this.GetComponent<AirManagerTest>().SpawnPlayers(devicesList);
 
         //npcs when 4 players or less
-        if (devicesList.Count < 5)
+        if (devicesList.Count < 5 && spawnNPC)
         {
             spawner.GetComponent<Spawner>().SpawnNPCs(2);
         }
@@ -155,6 +156,8 @@ public class MainManager : MonoBehaviour
             winningTeamPoints = teamBarea.GetComponent<Area>().points;
         }
         KillLoser();
+        teamACount = 0;
+        teamBCount = 0;
         StartCoroutine("SwitchToEndgame");
     }
 

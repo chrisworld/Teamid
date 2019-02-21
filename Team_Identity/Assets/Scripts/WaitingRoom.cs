@@ -31,7 +31,7 @@ public class WaitingRoom : MonoBehaviour
       return;
     }
 
-    players.Add(player_id, spawner.SpawnPlayer());
+   // players.Add(player_id, spawner.SpawnPlayer().GetComponent<Player>());
     ready_player += 1;
     Debug.Log("Ready player with id: " + player_id + " ready players: " + ready_player);
     

@@ -1379,7 +1379,7 @@ PrefabInstance:
       objectReference: {fileID: 1565453281}
     - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
       propertyPath: team
-      value: TeamB
+      value: Team Right
       objectReference: {fileID: 0}
     - target: {fileID: 4032738549840433481, guid: 872634ed2beb3bf418c4eb15ba07fc94,
         type: 3}
@@ -1498,7 +1498,7 @@ PrefabInstance:
       objectReference: {fileID: 1239066130}
     - target: {fileID: 2022182540, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
       propertyPath: team
-      value: TeamA
+      value: Team Left
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 872634ed2beb3bf418c4eb15ba07fc94, type: 3}
@@ -1934,7 +1934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e37d83ebce05ad74683fd3228dde9e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  browserStartMode: 0
+  browserStartMode: 3
   controllerHtml: {fileID: 4900000, guid: 34f4163d50dc07e4d9fd967bf17e49c6, type: 3}
   autoScaleCanvas: 1
 --- !u!4 &2010484950

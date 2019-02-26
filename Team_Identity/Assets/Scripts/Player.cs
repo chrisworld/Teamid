@@ -337,8 +337,6 @@ public class Player : MonoBehaviour
                     //become stunned yourself
                     GetStunned();
                 }
-
-                collision.gameObject.GetComponent<Player>().GetStunned();
             }
         }
     }

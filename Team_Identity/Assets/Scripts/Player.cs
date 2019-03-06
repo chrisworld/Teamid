@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
     float massReductionStun = 6f;
     float shieldRotatingSpeed = 30f;
     int maxPointsHolding = 3;
-    int deviceID;
+    public int deviceID;
 
     //Npc values
     Vector2 destination;
@@ -96,6 +96,7 @@ public class Player : MonoBehaviour
         shield = gameObject.transform.GetChild(0).gameObject;
         shield.GetComponent<Renderer>().enabled = false;
         nextBlink = Time.time;
+        SendPointMessageToController(this.deviceID, points);
 
         rb2d = GetComponent<Rigidbody2D>();
         direction = new Vector2(0, 0);

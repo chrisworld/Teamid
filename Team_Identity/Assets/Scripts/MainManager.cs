@@ -77,7 +77,7 @@ public class MainManager : MonoBehaviour
         }
         if(!started)
         {
-            countdown.GetComponent<Text>().text = "Starting when " +startPlayerCount+ " Players are connected in " + countdownTime;
+            countdown.GetComponent<Text>().text = "Starting when at least " +startPlayerCount+ " Players are connected in " + countdownTime;
             
             if (countdownTime <= 0 && !started){
                 FindDevices();
@@ -139,13 +139,13 @@ public class MainManager : MonoBehaviour
         FindObjectOfType<SoundManager>().StopBackgroundTheme();
         if (teamAarea.GetComponent<Area>().points > teamBarea.GetComponent<Area>().points)
         {
-            winningTeam = "Team A";
+            winningTeam = "Team Left";
             winningTeamPoints = teamAarea.GetComponent<Area>().points;
             losingTeamPoints = teamBarea.GetComponent<Area>().points;
         }
         else if (teamAarea.GetComponent<Area>().points < teamBarea.GetComponent<Area>().points)
         {
-            winningTeam = "Team B";
+            winningTeam = "Team Right";
             losingTeamPoints = teamAarea.GetComponent<Area>().points;
             winningTeamPoints = teamBarea.GetComponent<Area>().points;
         }
@@ -194,8 +194,6 @@ public class MainManager : MonoBehaviour
             v_renderer.color = new Color(1f, 1f, 1f, v_renderer.color.a - 0.05f);
         }
         victim.gameObject.SetActive(false);
-        
-
 
     }
     IEnumerator SwitchToEndgame()
